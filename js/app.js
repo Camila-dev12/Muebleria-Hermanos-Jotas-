@@ -1,0 +1,513 @@
+// =====================================================
+// Mueblería Hermanos Jota — Lógica del sitio
+// Renderizado dinámico, carga asíncrona, carrito, búsqueda
+// y validación de formulario. Sin backend.
+// =====================================================
+
+"use strict";
+
+const pagina = document.body.dataset.pagina;
+
+// -------------------------------------------------------
+// Utilidades de formato
+// -------------------------------------------------------
+function formatearPrecio(valor) {
+  return '$' + valor.toLocaleString('es-MX');
+}
+
+function rutaImagen(p, img) {
+  img.onerror = function () {
+    img.onerror = null;
+    img.src = 'assets/img/placeholder.svg';
+  };
+  img.src = p.img;
+  return img;
+}
+
+// -------------------------------------------------------
+// Carga "asíncrona" del catálogo (simula una petición)
+// -------------------------------------------------------
+function cargarProductos() {
+  return new Promise((resolver) => {
+    setTimeout(() => resolver(productos), 650);
+  });
+}
+
+// -------------------------------------------------------
+// Plantillas de tarjetas
+// -------------------------------------------------------
+function crearTarjeta(p) {
+  const articulo = document.createElement('article');
+  articulo.className = 'tarjeta';
+
+  const imagenWrap = document.createElement('div');
+  imagenWrap.className = 'tarjeta__imagen-wrap';
+
+  const imagen = document.createElement('img');
+  imagen.className = 'tarjeta__imagen';
+  imagen.alt = p.nombre;
+  imagen.loading = 'lazy';
+  rutaImagen(p, imagen);
+
+  imagenWrap.appendChild(imagen);
+
+  if (p.destacado) {
+    const etiqueta = document.createElement('span');
+    etiqueta.className = 'tarjeta__etiqueta';
+    etiqueta.textContent = 'Destacado';
+    imagenWrap.appendChild(etiqueta);
+  }
+
+  const cuerpo = document.createElement('div');
+  cuerpo.className = 'tarjeta__cuerpo';
+
+  const categoria = document.createElement('p');
+  categoria.className = 'tarjeta__categoria';
+  categoria.textContent = p.categoria;
+
+  const enlaceNombre = document.createElement('a');
+  enlaceNombre.className = 'tarjeta__nombre';
+  enlaceNombre.href = 'producto.html?id=' + p.id;
+  enlaceNombre.textContent = p.nombre;
+
+  const descripcion = document.createElement('p');
+  descripcion.className = 'tarjeta__descripcion';
+  descripcion.textContent = p.descripcionCorta;
+
+  const pie = document.createElement('div');
+  pie.className = 'tarjeta__pie';
+
+  const precio = document.createElement('span');
+  precio.className = 'tarjeta__precio';
+  precio.textContent = formatearPrecio(p.precio);
+
+  const boton = document.createElement('a');
+  boton.className = 'boton boton--primario';
+  boton.href = 'producto.html?id=' + p.id;
+  boton.textContent = 'Ver detalle';
+
+  pie.appendChild(precio);
+  pie.appendChild(boton);
+
+  cuerpo.appendChild(categoria);
+  cuerpo.appendChild(enlaceNombre);
+  cuerpo.appendChild(descripcion);
+  cuerpo.appendChild(pie);
+
+  articulo.appendChild(imagenWrap);
+  articulo.appendChild(cuerpo);
+
+  return articulo;
+}
+
+// -------------------------------------------------------
+// Página de inicio — productos destacados
+// -------------------------------------------------------
+async function renderizarDestacados() {
+  const contenedor = document.getElementById('productos-destacados');
+  if (!contenedor) return;
+
+  const datos = await cargarProductos();
+  const destacados = datos.filter((p) => p.destacado).slice(0, 4);
+
+  contenedor.innerHTML = '';
+  destacados.forEach((p) => {
+    const envoltura = document.createElement('div');
+    envoltura.className = 'grilla__item';
+    envoltura.appendChild(crearTarjeta(p));
+    contenedor.appendChild(envoltura);
+  });
+}
+
+// -------------------------------------------------------
+// Página catálogo — grilla completa + búsqueda
+// -------------------------------------------------------
+let catalogoActual = [];
+
+async function renderizarCatalogo(filtro) {
+  const contenedor = document.getElementById('grilla-productos');
+  const contador = document.getElementById('resultado-contador');
+  if (!contenedor) return;
+
+  ensenarSpinner(contenedor, true);
+
+  if (catalogoActual.length === 0) {
+    catalogoActual = await cargarProductos();
+  }
+
+  const termino = (filtro || '').trim().toLowerCase();
+  const visibles = catalogoActual.filter((p) =>
+    p.nombre.toLowerCase().includes(termino) ||
+    p.categoria.toLowerCase().includes(termino) ||
+    p.descripcionCorta.toLowerCase().includes(termino)
+  );
+
+  ensenarSpinner(contenedor, false);
+  contenedor.innerHTML = '';
+
+  if (visibles.length === 0) {
+    contenedor.appendChild(crearSinResultados(termino));
+  } else {
+    visibles.forEach((p) => {
+      const envoltura = document.createElement('div');
+      envoltura.className = 'grilla__item';
+      envoltura.appendChild(crearTarjeta(p));
+      contenedor.appendChild(envoltura);
+    });
+  }
+
+  if (contador) {
+    contador.innerHTML =
+      'Mostrando <strong>' + visibles.length + '</strong> de <strong>' +
+      catalogoActual.length + '</strong> productos';
+  }
+}
+
+function crearSinResultados(termino) {
+  const div = document.createElement('div');
+  div.className = 'sin-resultados';
+  div.innerHTML =
+    '<div class="sin-resultados__icono">🛋️</div>' +
+    '<h3>No encontramos muebles para "' +
+    termino + '"</h3>' +
+    '<p>Prueba con otro término o limpia la búsqueda.</p>';
+  return div;
+}
+
+function ensenarSpinner(contenedor, activo) {
+  const id = 'spinner-carga';
+  if (activo) {
+    if (contenedor.querySelector('#' + id)) return;
+    const spinner = document.createElement('div');
+    spinner.id = id;
+    spinner.className = 'spinner';
+    spinner.innerHTML =
+      '<div class="spinner__anillo"></div><p>Cargando muebles…</p>';
+    contenedor.appendChild(spinner);
+  } else {
+    const spinner = contenedor.querySelector('#' + id);
+    if (spinner) spinner.remove();
+  }
+}
+
+function prepararBusqueda() {
+  const campo = document.getElementById('buscador');
+  const botonLimpiar = document.getElementById('limpiar-busqueda');
+  if (!campo) return;
+
+  campo.addEventListener('input', () => {
+    renderizarCatalogo(campo.value);
+  });
+
+  if (botonLimpiar) {
+    botonLimpiar.addEventListener('click', () => {
+      campo.value = '';
+      renderizarCatalogo('');
+      campo.focus();
+    });
+  }
+}
+
+// -------------------------------------------------------
+// Página detalle — productos por id
+// -------------------------------------------------------
+async function renderizarDetalle() {
+  const contenedor = document.getElementById('detalle-producto');
+  if (!contenedor) return;
+
+  const id = Number(new URLSearchParams(window.location.search).get('id'));
+  const datos = await cargarProductos();
+  const p = datos.find((item) => item.id === id);
+
+  if (!p) {
+    contenedor.innerHTML =
+      '<div class="sin-resultados">' +
+      '<div class="sin-resultados__icono">🔎</div>' +
+      '<h3>Producto no encontrado</h3>' +
+      '<p>Es posible que el enlace haya cambiado.</p>' +
+      '<p><a class="boton boton--primario" href="productos.html">Ir al catálogo</a></p>' +
+      '</div>';
+    return;
+  }
+
+  document.title = p.nombre + ' | Mueblería Hermanos Jota';
+  const miga = document.getElementById('miga-producto');
+  if (miga) miga.textContent = p.nombre;
+  contenedor.innerHTML = construirDetalle(p);
+  prepararDetalle(p);
+
+  const hero = document.querySelector('[data-detalle-imagen]');
+  if (hero) rutaImagen(p, hero);
+}
+
+function construirDetalle(p) {
+  const stockClase = p.stock > 5 ? 'ok' : 'bajo';
+  const stockTexto =
+    p.stock > 5
+      ? '✔ Disponible (' + p.stock + ' en almacén)'
+      : '⚠ Despacho inmediato (¡quedan ' + p.stock + '!)';
+
+  const colores = p.colores
+    .map((c) => '<span class="color-chip">' + c + '</span>')
+    .join('');
+
+  return (
+    '<div class="detalle__grid">' +
+    '  <div class="detalle__imagen-wrap">' +
+    '    <img class="detalle__imagen" data-detalle-imagen alt="' + p.nombre + '">' +
+    '  </div>' +
+    '  <div class="detalle__info">' +
+    '    <span class="detalle__categoria">' + p.categoria + '</span>' +
+    '    <h1 class="detalle__nombre">' + p.nombre + '</h1>' +
+    '    <p class="detalle__precio">' + formatearPrecio(p.precio) + '</p>' +
+    '    <p class="detalle__stock detalle__stock--' + stockClase + '">' + stockTexto + '</p>' +
+    '    <p class="detalle__descripcion">' + p.descripcion + '</p>' +
+    '    <dl class="detalle__ficha">' +
+    '      <div class="detalle__fila"><dt>Materiales</dt><dd>' + p.materiales + '</dd></div>' +
+    '      <div class="detalle__fila"><dt>Medidas (A × An × P)</dt><dd>' + p.medidasAlto + ' × ' + p.medidasAncho + ' × ' + p.medidasProf + '</dd></div>' +
+    '      <div class="detalle__fila"><dt>Garantía</dt><dd>' + p.garantia + '</dd></div>' +
+    '      <div class="detalle__fila"><dt>Hecho en</dt><dd>' + p.origen + '</dd></div>' +
+    '    </dl>' +
+    '    <p class="detalle__selector"><label for="cantidad">Cantidad:</label>' +
+    '      <span class="cantidad">' +
+    '        <button type="button" data-cantidad="menos" aria-label="Reducir">−</button>' +
+    '        <input id="cantidad" type="number" value="1" min="1" max="' + p.stock + '" readonly>' +
+    '        <button type="button" data-cantidad="mas" aria-label="Aumentar">+</button>' +
+    '      </span>' +
+    '    </p>' +
+    '    <div class="detalle__colores">' + colores + '</div>' +
+    '    <button type="button" class="boton boton--accent boton--amplio" data-agregar-carrito>' +
+    '      🛒 Añadir al Carrito — ' + formatearPrecio(p.precio) +
+    '    </button>' +
+    '  </div>' +
+    '</div>'
+  );
+}
+
+function prepararDetalle(p) {
+  const input = document.getElementById('cantidad');
+  const menos = document.querySelector('[data-cantidad="menos"]');
+  const mas = document.querySelector('[data-cantidad="mas"]');
+  const botonAgregar = document.querySelector('[data-agregar-carrito]');
+
+  function cambiarCantidad(delta) {
+    let valor = Number(input.value) + delta;
+    valor = Math.max(1, Math.min(p.stock, valor));
+    input.value = valor;
+  }
+
+  menos.addEventListener('click', () => cambiarCantidad(-1));
+  mas.addEventListener('click', () => cambiarCantidad(1));
+
+  botonAgregar.addEventListener('click', () => {
+    agregarAlCarrito(p.id, Number(input.value));
+  });
+}
+
+// -------------------------------------------------------
+// Carrito simulado (localStorage + contador en el header)
+// -------------------------------------------------------
+const CLAVE_CARRITO = 'mhj-carrito';
+
+function obtenerCarrito() {
+  try {
+    return JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function guardarCarrito(carrito) {
+  localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+}
+
+function actualizarContadorCarrito() {
+  const carrito = obtenerCarrito();
+  const total = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+  document.querySelectorAll('.contador-carrito').forEach((el) => {
+    el.textContent = total;
+    el.classList.toggle('oculto', total === 0);
+  });
+}
+
+function agregarAlCarrito(id, cantidad) {
+  const carrito = obtenerCarrito();
+  const existente = carrito.find((item) => item.id === id);
+
+  if (existente) {
+    existente.cantidad += cantidad;
+  } else {
+    carrito.push({ id: id, cantidad: cantidad });
+  }
+
+  guardarCarrito(carrito);
+  actualizarContadorCarrito();
+  mostrarToast(cantidad + ' producto(s) añadido(s) al carrito 🛒');
+}
+
+let toastTemporizador = null;
+
+function mostrarToast(mensaje) {
+  let toast = document.querySelector('.toast');
+
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.setAttribute('role', 'status');
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = mensaje;
+  requestAnimationFrame(() => toast.classList.add('toast--visible'));
+
+  clearTimeout(toastTemporizador);
+  toastTemporizador = setTimeout(() => {
+    toast.classList.remove('toast--visible');
+  }, 2400);
+}
+
+// -------------------------------------------------------
+// Menú móvil (hamburguesa)
+// -------------------------------------------------------
+function prepararMenuMovil() {
+  const boton = document.getElementById('menu-boton');
+  const nav = document.getElementById('menu-principal');
+  if (!boton || !nav) return;
+
+  boton.addEventListener('click', () => {
+    nav.classList.toggle('nav--abierta');
+    boton.classList.toggle('menu-boton--activo');
+  });
+}
+
+// -------------------------------------------------------
+// Contacto — validación del lado del cliente
+// -------------------------------------------------------
+function prepararContacto() {
+  const formulario = document.getElementById('formulario-contacto');
+  if (!formulario) return;
+
+  const campos = [
+    { id: 'nombre', validar: validarNombre, mensaje: 'Ingresa tu nombre completo (mínimo 2 letras).' },
+    { id: 'email', validar: validarEmail, mensaje: 'Ingresa un correo válido, por ejemplo: ana@correo.com' },
+    { id: 'mensaje', validar: validarMensaje, mensaje: 'Escribe un mensaje de al menos 10 caracteres.' }
+  ];
+
+  const aviso = formulario.querySelector('.aviso');
+  const avisoIcono = document.getElementById('aviso-icono');
+  const avisoTexto = document.getElementById('aviso-texto');
+
+  campos.forEach((campo) => {
+    const input = document.getElementById(campo.id);
+    if (!input) return;
+
+    input.addEventListener('blur', () => {
+      validarCampo(campo);
+    });
+
+    input.addEventListener('input', () => {
+      if (input.closest('.campo--error')) {
+        validarCampo(campo);
+      }
+    });
+  });
+
+  formulario.addEventListener('submit', (evento) => {
+    evento.preventDefault();
+
+    let todoValido = true;
+    campos.forEach((campo) => {
+      if (!validarCampo(campo)) todoValido = false;
+    });
+
+    if (!todoValido) {
+      mostrarAviso(false, 'Revisa los campos marcados en rojo.');
+      return;
+    }
+
+    formulario.reset();
+    quitarDatosExitosos();
+    mostrarAviso(true, '¡Gracias por escribirnos! Te contactaremos muy pronto. 💌');
+  });
+}
+
+function validarCampo(campo) {
+  const input = document.getElementById(campo.id);
+  const envoltura = input.closest('.campo');
+  const mensaje = envoltura.querySelector('.campo__error');
+
+  const valido = campo.validar(input.value.trim());
+
+  envoltura.classList.toggle('campo--error', !valido);
+  envoltura.classList.toggle('campo--ok', valido);
+  mensaje.classList.toggle('campo__error--visible', !valido);
+  input.setAttribute('aria-invalid', String(!valido));
+
+  return valido;
+}
+
+function validarNombre(valor) {
+  return valor.length >= 2 && /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s'-]+$/.test(valor);
+}
+
+function validarEmail(valor) {
+  return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(valor);
+}
+
+function validarMensaje(valor) {
+  return valor.length >= 10;
+}
+
+function mostrarAviso(exito, texto) {
+  const aviso = document.getElementById('aviso');
+  const avisoIcono = document.getElementById('aviso-icono');
+  const avisoTexto = document.getElementById('aviso-texto');
+
+  aviso.classList.add('aviso--visible');
+  aviso.classList.toggle('aviso--ok', exito);
+  aviso.classList.toggle('aviso--error', !exito);
+  avisoIcono.textContent = exito ? '✅' : '⚠️';
+  avisoTexto.textContent = texto;
+
+  window.scrollTo({ top: aviso.offsetTop - 120, behavior: 'smooth' });
+}
+
+function quitarDatosExitosos() {
+  document.querySelectorAll('.campo--ok').forEach((c) => c.classList.remove('campo--ok'));
+}
+
+// -------------------------------------------------------
+// Inicialización por página
+// -------------------------------------------------------
+function iniciar() {
+  const anio = document.getElementById('anio');
+  if (anio) anio.textContent = new Date().getFullYear();
+
+  const heroFondo = document.querySelector('[data-hero-imagen]');
+  if (heroFondo) {
+    heroFondo.onerror = function () {
+      this.remove();
+    };
+  }
+
+  actualizarContadorCarrito();
+  prepararMenuMovil();
+
+  switch (pagina) {
+    case 'inicio':
+      renderizarDestacados();
+      break;
+    case 'productos':
+      prepararBusqueda();
+      renderizarCatalogo('');
+      break;
+    case 'producto':
+      renderizarDetalle();
+      break;
+    case 'contacto':
+      prepararContacto();
+      break;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', iniciar);

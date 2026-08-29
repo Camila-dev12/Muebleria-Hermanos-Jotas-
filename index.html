@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mueblería Hermanos Jota: muebles artesanales para tu hogar. Salas, dormitorios, comedor y oficina.">
+  <title>Mueblería Hermanos Jota | Muebles artesanales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-pagina="inicio">
+
+  <header class="header">
+    <div class="contenedor header__inner">
+      <a href="index.html" class="logo" aria-label="Mueblería Hermanos Jota - Inicio">
+        <span class="logo__icono" aria-hidden="true">HJ</span>
+        <span class="logo__texto">Mueblería Hermanos Jota
+          <span class="logo__subtitulo">Muebles artesanales</span>
+        </span>
+      </a>
+
+      <div class="header__acciones">
+        <a href="productos.html" class="carrito-enlace" aria-label="Ver carrito de compras">
+          🛒 <span class="contador-carrito oculto" aria-live="polite">0</span>
+        </a>
+        <button id="menu-boton" class="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-principal">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <nav id="menu-principal" class="nav contenedor" aria-label="Navegación principal">
+      <a href="index.html" class="nav__enlace activo">Inicio</a>
+      <a href="productos.html" class="nav__enlace">Productos</a>
+      <a href="contacto.html" class="nav__enlace">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Bienvenida">
+      <img class="hero__bg" data-hero-imagen
+           src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=1600&q=80"
+           alt="Sala moderna con muebles de madera">
+      <div class="contenedor hero__contenido">
+        <span class="hero__etiqueta">Hecho a mano en México</span>
+        <h1 class="hero__titulo">Muebles que cuentan la historia de tu hogar</h1>
+        <p class="hero__texto">
+          Madera noble, diseño atemporal y la calidez del trabajo artesanal.
+          Descubre piezas únicas que transforman cada espacio.
+        </p>
+        <div class="hero__acciones">
+          <a href="productos.html" class="boton boton--accent">Ver catálogo</a>
+          <a href="contacto.html" class="boton boton--outline">Contáctanos</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="contenedor">
+        <header class="seccion__encabezado">
+          <h2 class="seccion__titulo">Productos destacados</h2>
+          <p class="seccion__subtitulo">
+            Las piezas favoritas de nuestros clientes, seleccionadas por calidad y diseño.
+          </p>
+        </header>
+        <div id="productos-destacados" class="grilla" aria-live="polite"></div>
+        <p class="texto-centrado">
+          <a href="productos.html" class="boton boton--primario">Ver todos los productos</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion seccion--gris">
+      <div class="contenedor">
+        <header class="seccion__encabezado">
+          <h2 class="seccion__titulo">Nuestras colecciones</h2>
+          <p class="seccion__subtitulo">Espacios pensados para cada rincón de tu casa.</p>
+        </header>
+        <div class="categorias__grilla">
+          <a class="categoria" href="productos.html">
+            <span class="categoria__icono" aria-hidden="true">🛋️</span>
+            <h3 class="categoria__nombre">Salas</h3>
+            <p class="categoria__texto">Sofás y módulos para compartir.</p>
+          </a>
+          <a class="categoria" href="productos.html">
+            <span class="categoria__icono" aria-hidden="true">🛏️</span>
+            <h3 class="categoria__nombre">Dormitorios</h3>
+            <p class="categoria__texto">Camas y armarios para descansar.</p>
+          </a>
+          <a class="categoria" href="productos.html">
+            <span class="categoria__icono" aria-hidden="true">🍽️</span>
+            <h3 class="categoria__nombre">Comedor</h3>
+            <p class="categoria__texto">Mesas y sillas para reunir a todos.</p>
+          </a>
+          <a class="categoria" href="productos.html">
+            <span class="categoria__icono" aria-hidden="true">💼</span>
+            <h3 class="categoria__nombre">Oficina</h3>
+            <p class="categoria__texto">Escritorios y estantes productivos.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion banner">
+      <div class="contenedor banner__inner">
+        <div>
+          <h2 class="banner__titulo">Envío gratis en compras mayores a $3,000</h2>
+          <p class="banner__texto">Vigente en las 32 entidades del país · Pago seguro y a meses sin intereses.</p>
+        </div>
+        <a href="productos.html" class="boton boton--accent">Aprovecha la oferta</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="contenedor footer__grid">
+      <div class="footer__columna footer__columna--marca">
+        <h3 class="footer__titulo">Mueblería Hermanos Jota</h3>
+        <p class="footer__texto">
+          Muebles artesanales de madera noble hechos por manos mexicanas desde 1985.
+          Calidad, diseño y honestidad en cada pieza.
+        </p>
+      </div>
+      <div class="footer__columna">
+        <h3 class="footer__titulo">Navegación</h3>
+        <ul class="footer__enlaces">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="producto.html?id=1">Comprar ahora</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer__columna">
+        <h3 class="footer__titulo">Contacto</h3>
+        <div class="footer__info">
+          <p>📍 Calle Madera 123, Col. Centro, Puebla</p>
+          <p>📞 (222) 123-4567</p>
+          <p>✉️ hola@muebleriahj.mx</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer__barra">
+      <p class="contenedor">© <span id="anio"></span> Mueblería Hermanos Jota · Proyecto educativo · Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/productos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
