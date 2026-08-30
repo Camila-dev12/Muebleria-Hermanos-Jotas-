@@ -12,6 +12,66 @@
 </head>
 <body data-pagina="inicio">
 
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icono-carrito" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="21" r="1.4"></circle>
+      <circle cx="18" cy="21" r="1.4"></circle>
+      <path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21.5 8H6"></path>
+    </symbol>
+    <symbol id="icono-sofa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"></path>
+      <path d="M3 11h18a1 1 0 0 1 1 1v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3a1 1 0 0 1 1-1z"></path>
+      <path d="M5 17v3M19 17v3"></path>
+    </symbol>
+    <symbol id="icono-cama" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"></path>
+      <path d="M2 18v2M22 18v2"></path>
+      <path d="M2 13h20"></path>
+      <path d="M6 10V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4"></path>
+    </symbol>
+    <symbol id="icono-comedor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="12" cy="8" rx="7" ry="3"></ellipse>
+      <path d="M12 11v9M8 20l1-6M16 20l-1-6"></path>
+    </symbol>
+    <symbol id="icono-maletin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="7" width="19" height="13" rx="2"></rect>
+      <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+      <path d="M2.5 12.5h19"></path>
+    </symbol>
+    <symbol id="icono-ubicacion" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"></path>
+      <circle cx="12" cy="10" r="2.5"></circle>
+    </symbol>
+    <symbol id="icono-telefono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.5 3.5h3.2l1.6 4.4-2 1.6a13 13 0 0 0 6.2 6.2l1.6-2 4.4 1.6v3.2a1.5 1.5 0 0 1-1.6 1.5A17.5 17.5 0 0 1 3 5.1a1.5 1.5 0 0 1 1.5-1.6z"></path>
+    </symbol>
+    <symbol id="icono-email" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="5" width="19" height="14" rx="2"></rect>
+      <path d="M3 6.5l9 6.5 9-6.5"></path>
+    </symbol>
+    <symbol id="icono-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="10.5" cy="10.5" r="7"></circle>
+      <path d="M20.5 20.5l-4.8-4.8"></path>
+    </symbol>
+    <symbol id="icono-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12.5l5.2 5.2L20 6.5"></path>
+    </symbol>
+    <symbol id="icono-alerta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.5l9.5 16.5H2.5z"></path>
+      <path d="M12 10v4"></path>
+      <circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"></circle>
+    </symbol>
+    <symbol id="icono-check-circulo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9.5"></circle>
+      <path d="M8 12.3l2.8 2.8 5.2-6"></path>
+    </symbol>
+    <symbol id="icono-alerta-circulo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9.5"></circle>
+      <path d="M12 7.5v5.5"></path>
+      <circle cx="12" cy="16.5" r="0.6" fill="currentColor" stroke="none"></circle>
+    </symbol>
+  </svg>
+
   <header class="header">
     <div class="contenedor header__inner">
       <a href="index.html" class="logo" aria-label="Mueblería Hermanos Jota - Inicio">
@@ -23,7 +83,8 @@
 
       <div class="header__acciones">
         <a href="productos.html" class="carrito-enlace" aria-label="Ver carrito de compras">
-          🛒 <span class="contador-carrito oculto" aria-live="polite">0</span>
+          <svg class="icono icono--carrito" aria-hidden="true"><use href="#icono-carrito"></use></svg>
+          <span class="contador-carrito oculto" aria-live="polite">0</span>
         </a>
         <button id="menu-boton" class="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-principal">
           <span></span><span></span><span></span>
@@ -31,7 +92,7 @@
       </div>
     </div>
 
-    <nav id="menu-principal" class="nav contenedor" aria-label="Navegación principal">
+    <n id="menu-principal" class="nav contenedor" aria-label="Navegación principal">
       <a href="index.html" class="nav__enlace activo">Inicio</a>
       <a href="productos.html" class="nav__enlace">Productos</a>
       <a href="contacto.html" class="nav__enlace">Contacto</a>
@@ -80,22 +141,22 @@
         </header>
         <div class="categorias__grilla">
           <a class="categoria" href="productos.html">
-            <span class="categoria__icono" aria-hidden="true">🛋️</span>
+            <span class="categoria__icono" aria-hidden="true"><svg class="icono" aria-hidden="true"><use href="#icono-sofa"></use></svg></span>
             <h3 class="categoria__nombre">Salas</h3>
             <p class="categoria__texto">Sofás y módulos para compartir.</p>
           </a>
           <a class="categoria" href="productos.html">
-            <span class="categoria__icono" aria-hidden="true">🛏️</span>
+            <span class="categoria__icono" aria-hidden="true"><svg class="icono" aria-hidden="true"><use href="#icono-cama"></use></svg></span>
             <h3 class="categoria__nombre">Dormitorios</h3>
             <p class="categoria__texto">Camas y armarios para descansar.</p>
           </a>
           <a class="categoria" href="productos.html">
-            <span class="categoria__icono" aria-hidden="true">🍽️</span>
+            <span class="categoria__icono" aria-hidden="true"><svg class="icono" aria-hidden="true"><use href="#icono-comedor"></use></svg></span>
             <h3 class="categoria__nombre">Comedor</h3>
             <p class="categoria__texto">Mesas y sillas para reunir a todos.</p>
           </a>
           <a class="categoria" href="productos.html">
-            <span class="categoria__icono" aria-hidden="true">💼</span>
+            <span class="categoria__icono" aria-hidden="true"><svg class="icono" aria-hidden="true"><use href="#icono-maletin"></use></svg></span>
             <h3 class="categoria__nombre">Oficina</h3>
             <p class="categoria__texto">Escritorios y estantes productivos.</p>
           </a>
@@ -135,9 +196,9 @@
       <div class="footer__columna">
         <h3 class="footer__titulo">Contacto</h3>
         <div class="footer__info">
-          <p>📍 Calle Madera 123, Col. Centro, Puebla</p>
-          <p>📞 (222) 123-4567</p>
-          <p>✉️ hola@muebleriahj.mx</p>
+          <p><svg class="icono" aria-hidden="true"><use href="#icono-ubicacion"></use></svg> Calle Madera 123, Col. Centro, Puebla</p>
+          <p><svg class="icono" aria-hidden="true"><use href="#icono-telefono"></use></svg> (222) 123-4567</p>
+          <p><svg class="icono" aria-hidden="true"><use href="#icono-email"></use></svg> hola@muebleriahj.mx</p>
         </div>
       </div>
     </div>

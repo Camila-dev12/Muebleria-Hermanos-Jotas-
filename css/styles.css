@@ -308,6 +308,7 @@ ul {
 .boton--primario {
   background-color: var(--color-primario);
   color: var(--color-blanco);
+  margin-top: 20px;
 }
 
 .boton--primario:hover {
@@ -883,6 +884,11 @@ ul {
   font-weight: 600;
 }
 
+.aviso .icono {
+  width: 1.4em;
+  height: 1.4em;
+}
+
 .aviso--visible {
   display: flex;
 }
@@ -1092,4 +1098,21 @@ ul {
 
 .texto-centrado {
   text-align: center;
+}
+
+/* ---------- Íconos SVG ---------- */
+.icono {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: -0.15em;
+  fill: none;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+.icono--carrito {
+  width: 1.3em;
+  height: 1.3em;
+  vertical-align: -0.28em;
 }

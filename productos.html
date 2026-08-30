@@ -12,6 +12,34 @@
 </head>
 <body data-pagina="productos">
 
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icono-carrito" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="21" r="1.4"></circle>
+      <circle cx="18" cy="21" r="1.4"></circle>
+      <path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21.5 8H6"></path>
+    </symbol>
+    <symbol id="icono-sofa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"></path>
+      <path d="M3 11h18a1 1 0 0 1 1 1v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3a1 1 0 0 1 1-1z"></path>
+      <path d="M5 17v3M19 17v3"></path>
+    </symbol>
+    <symbol id="icono-ubicacion" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"></path>
+      <circle cx="12" cy="10" r="2.5"></circle>
+    </symbol>
+    <symbol id="icono-telefono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.5 3.5h3.2l1.6 4.4-2 1.6a13 13 0 0 0 6.2 6.2l1.6-2 4.4 1.6v3.2a1.5 1.5 0 0 1-1.6 1.5A17.5 17.5 0 0 1 3 5.1a1.5 1.5 0 0 1 1.5-1.6z"></path>
+    </symbol>
+    <symbol id="icono-email" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="5" width="19" height="14" rx="2"></rect>
+      <path d="M3 6.5l9 6.5 9-6.5"></path>
+    </symbol>
+    <symbol id="icono-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="10.5" cy="10.5" r="7"></circle>
+      <path d="M20.5 20.5l-4.8-4.8"></path>
+    </symbol>
+  </svg>
+
   <header class="header">
     <div class="contenedor header__inner">
       <a href="index.html" class="logo" aria-label="Mueblería Hermanos Jota - Inicio">
@@ -23,7 +51,8 @@
 
       <div class="header__acciones">
         <a href="productos.html" class="carrito-enlace" aria-label="Ver carrito de compras">
-          🛒 <span class="contador-carrito oculto" aria-live="polite">0</span>
+          <svg class="icono icono--carrito" aria-hidden="true"><use href="#icono-carrito"></use></svg>
+          <span class="contador-carrito oculto" aria-live="polite">0</span>
         </a>
         <button id="menu-boton" class="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-principal">
           <span></span><span></span><span></span>
@@ -50,7 +79,7 @@
 
         <div class="entrada" role="search">
           <div class="entrada__campo">
-            <span class="entrada__icono" aria-hidden="true">🔍</span>
+            <span class="entrada__icono" aria-hidden="true"><svg class="icono" aria-hidden="true"><use href="#icono-lupa"></use></svg></span>
             <input id="buscador" type="search" placeholder="Buscar muebles…"
                    aria-label="Buscar productos" autocomplete="off">
             <button id="limpiar-busqueda" class="entrada__limpiar" type="button">Limpiar</button>
@@ -84,9 +113,9 @@
       <div class="footer__columna">
         <h3 class="footer__titulo">Contacto</h3>
         <div class="footer__info">
-          <p>📍 Calle Madera 123, Col. Centro, Puebla</p>
-          <p>📞 (222) 123-4567</p>
-          <p>✉️ hola@muebleriahj.mx</p>
+          <p><svg class="icono" aria-hidden="true"><use href="#icono-ubicacion"></use></svg> Calle Madera 123, Col. Centro, Puebla</p>
+          <p><svg class="icono" aria-hidden="true"><use href="#icono-telefono"></use></svg> (222) 123-4567</p>
+          <p><svg class="icono" aria-hidden="true"><use href="#icono-email"></use></svg> hola@muebleriahj.mx</p>
         </div>
       </div>
     </div>

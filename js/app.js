@@ -167,7 +167,7 @@ function crearSinResultados(termino) {
   const div = document.createElement('div');
   div.className = 'sin-resultados';
   div.innerHTML =
-    '<div class="sin-resultados__icono">🛋️</div>' +
+    '<div class="sin-resultados__icono"><svg class="icono" aria-hidden="true"><use href="#icono-sofa"></use></svg></div>' +
     '<h3>No encontramos muebles para "' +
     termino + '"</h3>' +
     '<p>Prueba con otro término o limpia la búsqueda.</p>';
@@ -222,7 +222,7 @@ async function renderizarDetalle() {
   if (!p) {
     contenedor.innerHTML =
       '<div class="sin-resultados">' +
-      '<div class="sin-resultados__icono">🔎</div>' +
+      '<div class="sin-resultados__icono"><svg class="icono" aria-hidden="true"><use href="#icono-lupa"></use></svg></div>' +
       '<h3>Producto no encontrado</h3>' +
       '<p>Es posible que el enlace haya cambiado.</p>' +
       '<p><a class="boton boton--primario" href="productos.html">Ir al catálogo</a></p>' +
@@ -244,8 +244,8 @@ function construirDetalle(p) {
   const stockClase = p.stock > 5 ? 'ok' : 'bajo';
   const stockTexto =
     p.stock > 5
-      ? '✔ Disponible (' + p.stock + ' en almacén)'
-      : '⚠ Despacho inmediato (¡quedan ' + p.stock + '!)';
+      ? '<svg class="icono" aria-hidden="true"><use href="#icono-check"></use></svg> Disponible (' + p.stock + ' en almacén)'
+      : '<svg class="icono" aria-hidden="true"><use href="#icono-alerta"></use></svg> Despacho inmediato (¡quedan ' + p.stock + '!)';
 
   const colores = p.colores
     .map((c) => '<span class="color-chip">' + c + '</span>')
@@ -277,7 +277,7 @@ function construirDetalle(p) {
     '    </p>' +
     '    <div class="detalle__colores">' + colores + '</div>' +
     '    <button type="button" class="boton boton--accent boton--amplio" data-agregar-carrito>' +
-    '      🛒 Añadir al Carrito — ' + formatearPrecio(p.precio) +
+    '      <svg class="icono" aria-hidden="true"><use href="#icono-carrito"></use></svg> Añadir al Carrito — ' + formatearPrecio(p.precio) +
     '    </button>' +
     '  </div>' +
     '</div>'
@@ -342,7 +342,7 @@ function agregarAlCarrito(id, cantidad) {
 
   guardarCarrito(carrito);
   actualizarContadorCarrito();
-  mostrarToast(cantidad + ' producto(s) añadido(s) al carrito 🛒');
+  mostrarToast(cantidad + ' producto(s) añadido(s) al carrito <svg class="icono" aria-hidden="true"><use href="#icono-carrito"></use></svg>');
 }
 
 let toastTemporizador = null;
@@ -357,7 +357,7 @@ function mostrarToast(mensaje) {
     document.body.appendChild(toast);
   }
 
-  toast.textContent = mensaje;
+  toast.innerHTML = mensaje;
   requestAnimationFrame(() => toast.classList.add('toast--visible'));
 
   clearTimeout(toastTemporizador);
@@ -427,7 +427,7 @@ function prepararContacto() {
 
     formulario.reset();
     quitarDatosExitosos();
-    mostrarAviso(true, '¡Gracias por escribirnos! Te contactaremos muy pronto. 💌');
+    mostrarAviso(true, '¡Gracias por escribirnos! Te contactaremos muy pronto.');
   });
 }
 
@@ -466,7 +466,9 @@ function mostrarAviso(exito, texto) {
   aviso.classList.add('aviso--visible');
   aviso.classList.toggle('aviso--ok', exito);
   aviso.classList.toggle('aviso--error', !exito);
-  avisoIcono.textContent = exito ? '✅' : '⚠️';
+  avisoIcono.innerHTML = exito
+    ? '<svg class="icono" aria-hidden="true"><use href="#icono-check-circulo"></use></svg>'
+    : '<svg class="icono" aria-hidden="true"><use href="#icono-alerta-circulo"></use></svg>';
   avisoTexto.textContent = texto;
 
   window.scrollTo({ top: aviso.offsetTop - 120, behavior: 'smooth' });
