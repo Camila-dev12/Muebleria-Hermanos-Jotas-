@@ -39,6 +39,7 @@ function cargarProductos() {
 function crearTarjeta(p) {
   const articulo = document.createElement('article');
   articulo.className = 'tarjeta';
+  articulo.dataset.productoId = p.id;
 
   const imagenWrap = document.createElement('div');
   imagenWrap.className = 'tarjeta__imagen-wrap';
@@ -49,7 +50,13 @@ function crearTarjeta(p) {
   imagen.loading = 'lazy';
   rutaImagen(p, imagen);
 
+  const cantidadBadge = document.createElement('span');
+  cantidadBadge.className = 'tarjeta__cantidad-carrito';
+  cantidadBadge.hidden = true;
+  cantidadBadge.setAttribute('aria-label', 'Cantidad en el carrito');
+
   imagenWrap.appendChild(imagen);
+  imagenWrap.appendChild(cantidadBadge);
 
   if (p.destacado) {
     const etiqueta = document.createElement('span');
@@ -117,6 +124,8 @@ async function renderizarDestacados() {
     envoltura.appendChild(crearTarjeta(p));
     contenedor.appendChild(envoltura);
   });
+
+  actualizarContadorCarrito();
 }
 
 // -------------------------------------------------------
@@ -155,6 +164,8 @@ async function renderizarCatalogo(filtro) {
       contenedor.appendChild(envoltura);
     });
   }
+
+  actualizarContadorCarrito();
 
   if (contador) {
     contador.innerHTML =
@@ -358,9 +369,30 @@ function guardarCarrito(carrito) {
 function actualizarContadorCarrito() {
   const carrito = obtenerCarrito();
   const total = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+
   document.querySelectorAll('.contador-carrito').forEach((el) => {
     el.textContent = total;
     el.classList.toggle('oculto', total === 0);
+  });
+
+  document.querySelectorAll('.tarjeta__cantidad-carrito').forEach((badge) => {
+    const tarjeta = badge.closest('.tarjeta');
+    if (!tarjeta) return;
+
+    const productoId = Number(tarjeta.dataset.productoId);
+    const cantidad = carrito
+      .filter((item) => item.id === productoId)
+      .reduce((acc, item) => acc + item.cantidad, 0);
+
+    if (cantidad > 0) {
+      badge.textContent = cantidad;
+      badge.hidden = false;
+      badge.style.display = 'inline-flex';
+    } else {
+      badge.textContent = '';
+      badge.hidden = true;
+      badge.style.display = 'none';
+    }
   });
 }
 
