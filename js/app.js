@@ -261,7 +261,7 @@ function construirDetalle(p) {
       : '<svg class="icono" aria-hidden="true"><use href="#icono-alerta"></use></svg> Despacho inmediato (¡quedan ' + p.stock + '!)';
 
   const colores = p.colores
-    .map((c) => '<span class="color-chip">' + c + '</span>')
+    .map((c) => '<button type="button" class="color-chip" data-color="' + c + '" aria-pressed="false">' + c + '</button>')
     .join('');
 
   return (
@@ -288,7 +288,8 @@ function construirDetalle(p) {
     '        <button type="button" data-cantidad="mas" aria-label="Aumentar">+</button>' +
     '      </span>' +
     '    </p>' +
-    '    <div class="detalle__colores">' + colores + '</div>' +
+    '    <div class="detalle__colores" role="group" aria-label="Elige un color">' + colores + '</div>' +
+    '    <p class="detalle__opciones-error" role="alert" hidden>Tienes que elegir un tema</p>' +
     '    <button type="button" class="boton boton--accent boton--amplio" data-agregar-carrito>' +
     '      <svg class="icono" aria-hidden="true"><use href="#icono-carrito"></use></svg> Añadir al Carrito — ' + formatearPrecio(p.precio) +
     '    </button>' +
@@ -302,6 +303,9 @@ function prepararDetalle(p) {
   const menos = document.querySelector('[data-cantidad="menos"]');
   const mas = document.querySelector('[data-cantidad="mas"]');
   const botonAgregar = document.querySelector('[data-agregar-carrito]');
+  const opcionesColor = document.querySelectorAll('[data-color]');
+  const mensajeError = document.querySelector('.detalle__opciones-error');
+  let colorSeleccionado = '';
 
   function cambiarCantidad(delta) {
     let valor = Number(input.value) + delta;
@@ -312,8 +316,25 @@ function prepararDetalle(p) {
   menos.addEventListener('click', () => cambiarCantidad(-1));
   mas.addEventListener('click', () => cambiarCantidad(1));
 
+  opcionesColor.forEach((opcion) => {
+    opcion.addEventListener('click', () => {
+      opcionesColor.forEach((elemento) => {
+        elemento.classList.remove('color-chip--activo');
+        elemento.setAttribute('aria-pressed', 'false');
+      });
+      opcion.classList.add('color-chip--activo');
+      opcion.setAttribute('aria-pressed', 'true');
+      colorSeleccionado = opcion.dataset.color;
+      mensajeError.hidden = true;
+    });
+  });
+
   botonAgregar.addEventListener('click', () => {
-    agregarAlCarrito(p.id, Number(input.value));
+    if (!colorSeleccionado) {
+      mensajeError.hidden = false;
+      return;
+    }
+    agregarAlCarrito(p.id, Number(input.value), colorSeleccionado);
   });
 }
 
@@ -343,14 +364,14 @@ function actualizarContadorCarrito() {
   });
 }
 
-function agregarAlCarrito(id, cantidad) {
+function agregarAlCarrito(id, cantidad, color) {
   const carrito = obtenerCarrito();
-  const existente = carrito.find((item) => item.id === id);
+  const existente = carrito.find((item) => item.id === id && item.color === color);
 
   if (existente) {
     existente.cantidad += cantidad;
   } else {
-    carrito.push({ id: id, cantidad: cantidad });
+    carrito.push({ id: id, cantidad: cantidad, color: color });
   }
 
   guardarCarrito(carrito);

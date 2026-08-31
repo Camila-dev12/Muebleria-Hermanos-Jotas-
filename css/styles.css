@@ -812,6 +812,24 @@ ul {
   padding: 0.35rem 1rem;
   font-size: 0.85rem;
   color: var(--color-texto);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.color-chip:hover,
+.color-chip--activo {
+  background-color: var(--color-primario);
+  border-color: var(--color-primario);
+  color: var(--color-blanco);
+  transform: translateY(-1px);
+}
+
+.detalle__opciones-error {
+  margin: -0.8rem 0 1.1rem;
+  color: var(--color-error);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .detalle__selector {
