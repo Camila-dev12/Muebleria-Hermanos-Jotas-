@@ -208,6 +208,19 @@ function prepararBusqueda() {
   }
 }
 
+function prepararBusquedaInicio() {
+  const formulario = document.querySelector('.entrada--nav');
+  if (!formulario) return;
+
+  formulario.addEventListener('submit', (evento) => {
+    const campo = formulario.querySelector('input');
+    if (!campo.value.trim()) {
+      evento.preventDefault();
+      campo.focus();
+    }
+  });
+}
+
 // -------------------------------------------------------
 // Página detalle — productos por id
 // -------------------------------------------------------
@@ -497,11 +510,16 @@ function iniciar() {
 
   switch (pagina) {
     case 'inicio':
+      prepararBusquedaInicio();
       renderizarDestacados();
       break;
     case 'productos':
       prepararBusqueda();
-      renderizarCatalogo('');
+      renderizarCatalogo(new URLSearchParams(window.location.search).get('busqueda') || '');
+      const busquedaInicial = document.getElementById('buscador');
+      if (busquedaInicial) {
+        busquedaInicial.value = new URLSearchParams(window.location.search).get('busqueda') || '';
+      }
       break;
     case 'producto':
       renderizarDetalle();

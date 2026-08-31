@@ -73,13 +73,21 @@
   </svg>
 
   <header class="header">
-    <div class="contenedor header__inner">
+    <div class="contenedor header__inner header__inner--inicio">
       <a href="index.html" class="logo" aria-label="Mueblería Hermanos Jota - Inicio">
         <span class="logo__icono" aria-hidden="true">HJ</span>
         <span class="logo__texto">Mueblería Hermanos Jota
           <span class="logo__subtitulo">Muebles artesanales</span>
         </span>
       </a>
+
+      <form class="entrada entrada--nav" role="search" action="productos.html">
+        <div class="entrada__campo">
+          <span class="entrada__icono" aria-hidden="true"><svg class="icono" aria-hidden="true"><use href="#icono-lupa"></use></svg></span>
+          <input name="busqueda" type="search" placeholder="Buscar muebles…" aria-label="Buscar productos" autocomplete="off">
+          <button class="entrada__limpiar" type="submit">Buscar</button>
+        </div>
+      </form>
 
       <div class="header__acciones">
         <a href="productos.html" class="carrito-enlace" aria-label="Ver carrito de compras">
@@ -92,7 +100,7 @@
       </div>
     </div>
 
-    <n id="menu-principal" class="nav contenedor" aria-label="Navegación principal">
+    <nav id="menu-principal" class="nav contenedor" aria-label="Navegación principal">
       <a href="index.html" class="nav__enlace activo">Inicio</a>
       <a href="productos.html" class="nav__enlace">Productos</a>
       <a href="contacto.html" class="nav__enlace">Contacto</a>
