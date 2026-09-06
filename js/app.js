@@ -275,6 +275,16 @@ function construirDetalle(p) {
     .map((c) => '<button type="button" class="color-chip" data-color="' + c + '" aria-pressed="false">' + c + '</button>')
     .join('');
 
+  let fichaHTML = '';
+  const camposExcluidos = ['id', 'nombre', 'categoria', 'precio', 'img', 'destacado', 'stock', 'descripcionCorta', 'descripcion', 'colores'];
+
+  for (const key in p) {
+    if (Object.prototype.hasOwnProperty.call(p, key) && !camposExcluidos.includes(key)) {
+      const label = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+      fichaHTML += '<div class="detalle__fila"><dt>' + label + '</dt><dd>' + (p[key] || '') + '</dd></div>';
+    }
+  }
+
   return (
     '<div class="detalle__grid">' +
     '  <div class="detalle__imagen-wrap">' +
@@ -286,12 +296,7 @@ function construirDetalle(p) {
     '    <p class="detalle__precio">' + formatearPrecio(p.precio) + '</p>' +
     '    <p class="detalle__stock detalle__stock--' + stockClase + '">' + stockTexto + '</p>' +
     '    <p class="detalle__descripcion">' + p.descripcion + '</p>' +
-    '    <dl class="detalle__ficha">' +
-    '      <div class="detalle__fila"><dt>Materiales</dt><dd>' + p.materiales + '</dd></div>' +
-    '      <div class="detalle__fila"><dt>Medidas (A × An × P)</dt><dd>' + p.medidasAlto + ' × ' + p.medidasAncho + ' × ' + p.medidasProf + '</dd></div>' +
-    '      <div class="detalle__fila"><dt>Garantía</dt><dd>' + p.garantia + '</dd></div>' +
-    '      <div class="detalle__fila"><dt>Hecho en</dt><dd>' + p.origen + '</dd></div>' +
-    '    </dl>' +
+    '    <dl class="detalle__ficha">' + fichaHTML + '</dl>' +
     '    <p class="detalle__selector"><label for="cantidad">Cantidad:</label>' +
     '      <span class="cantidad">' +
     '        <button type="button" data-cantidad="menos" aria-label="Reducir">−</button>' +
