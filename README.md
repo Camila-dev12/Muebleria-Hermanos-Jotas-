@@ -7,7 +7,6 @@ https://muebleria-hermanos-jota-beta.vercel.app
 * Camila Antonela Corregidor Higa
 * Ludmila Belén Argüello
 * Nicolas Ferreyra
-* Trinidad Ramos
 
 ---
 
