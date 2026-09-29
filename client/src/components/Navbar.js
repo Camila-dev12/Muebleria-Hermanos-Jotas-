@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Navbar({ cartCount = 0, activePage = 'inicio', showSearch = true }) {
+function Navbar({ cartCount = 0, activePage = 'inicio', searchTerm = '', showSearch = true, onNavigate, onSearch }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   function toggleMenu() {
@@ -9,6 +9,18 @@ function Navbar({ cartCount = 0, activePage = 'inicio', showSearch = true }) {
 
   function closeMenu() {
     setMenuOpen(false);
+  }
+
+  function navigate(event, page) {
+    event.preventDefault();
+    closeMenu();
+    onNavigate(page);
+  }
+
+  function submitSearch(event) {
+    event.preventDefault();
+    onSearch(event.currentTarget.elements.busqueda.value);
+    onNavigate('productos');
   }
 
   return (
@@ -23,10 +35,10 @@ function Navbar({ cartCount = 0, activePage = 'inicio', showSearch = true }) {
         </a>
 
         {showSearch && (
-          <form className="navbar__search" role="search" onSubmit={(event) => event.preventDefault()}>
+          <form className="navbar__search" role="search" onSubmit={submitSearch}>
             <label className="sr-only" htmlFor="navbar-search">Buscar productos</label>
             <span className="navbar__search-icon" aria-hidden="true">⌕</span>
-            <input id="navbar-search" name="busqueda" type="search" placeholder="Buscar muebles..." />
+            <input id="navbar-search" name="busqueda" type="search" placeholder="Buscar muebles..." defaultValue={searchTerm} />
             <button type="submit">Buscar</button>
           </form>
         )}
@@ -60,9 +72,9 @@ function Navbar({ cartCount = 0, activePage = 'inicio', showSearch = true }) {
         className={`navbar__navigation${menuOpen ? ' navbar__navigation--open' : ''}`}
         aria-label="Navegación principal"
       >
-        <a className={activePage === 'inicio' ? 'navbar__link--active' : ''} href="/" onClick={closeMenu}>Inicio</a>
-        <a className={activePage === 'productos' ? 'navbar__link--active' : ''} href="/productos" onClick={closeMenu}>Productos</a>
-        <a className={activePage === 'contacto' ? 'navbar__link--active' : ''} href="/contacto" onClick={closeMenu}>Contacto</a>
+        <a className={activePage === 'inicio' ? 'navbar__link--active' : ''} href="/" onClick={(event) => navigate(event, 'inicio')}>Inicio</a>
+        <a className={activePage === 'productos' ? 'navbar__link--active' : ''} href="/productos" onClick={(event) => navigate(event, 'productos')}>Productos</a>
+        <a className={activePage === 'contacto' ? 'navbar__link--active' : ''} href="/contacto" onClick={(event) => navigate(event, 'contacto')}>Contacto</a>
       </nav>
     </header>
   );
