@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 function App() {
   return (
     <div className="App">
-      <Navbar cartCount={0} />
+      <Navbar cartCount={0} activePage="inicio" />
       <main className="App__content">
         <h1>Mueblería Hermanos Jota</h1>
         <p>Frontend React en construcción.</p>

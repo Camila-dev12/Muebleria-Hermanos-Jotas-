@@ -8,46 +8,61 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #2b2118;
+  background: #291e15;
   color: #ffffff;
-  box-shadow: 0 10px 30px rgba(43, 33, 24, 0.12);
+  box-shadow: 0 8px 24px rgba(43, 33, 24, 0.18);
 }
 
 .navbar__inner {
-  width: min(100% - 2rem, 1360px);
-  min-height: 72px;
+  width: calc(100% - 2rem);
+  max-width: 1700px;
+  min-height: 78px;
   margin: 0 auto;
+  padding-top: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: center;
+  gap: clamp(7rem, 13vw, 13rem);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .navbar__brand {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  min-width: 245px;
   color: inherit;
   text-decoration: none;
 }
 
 .navbar__mark {
-  width: 42px;
-  height: 42px;
+  width: 45px;
+  height: 45px;
   display: grid;
   place-items: center;
   border-radius: 8px;
   background: #c89952;
   color: #2b2118;
   font-family: Georgia, serif;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
 .navbar__name {
   font-family: Georgia, serif;
-  font-size: 1.1rem;
-  line-height: 1.1;
+  font-size: 1.3rem;
+  line-height: 1.5;
   white-space: nowrap;
 }
 
@@ -56,30 +71,92 @@
   margin-top: 0.2rem;
   color: #e3c28f;
   font-family: sans-serif;
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .navbar__actions {
   display: flex;
   align-items: center;
+  min-width: 245px;
+  justify-content: flex-end;
   gap: 0.75rem;
+}
+
+.navbar__search {
+  display: flex;
+  align-items: center;
+  width: min(100%, 520px);
+  height: 30px;
+  padding: 0.25rem;
+  border: 2px solid #d8d2c8;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+.navbar__search-icon {
+  width: 34px;
+  color: #897f73;
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+  padding-bottom: 0.1rem;
+  padding-left: 0.5rem;
+  line-height: 1;
+  text-align: center;
+  transform: rotate(-20deg);
+}
+
+.navbar__search input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.35rem 0.2rem;
+  border: 0;
+  outline: 0;
+  background: #ffffff;
+  color: #4a4036;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.navbar__search button {
+  min-width: 70px;
+  height: 28px;
+  padding:0;
+  border: 0;
+  border-radius: 999px;
+  background: #5a4632;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 .navbar__cart {
   position: relative;
   color: inherit;
-  font-size: 1.2rem;
   text-decoration: none;
+}
+
+.navbar__cart svg {
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
 }
 
 .navbar__count {
   position: absolute;
-  top: -0.6rem;
-  right: -0.75rem;
-  min-width: 1.2rem;
-  padding: 0.1rem 0.3rem;
+  top: -0.35rem;
+  right: -0.6rem;
+  min-width: 28px;
+  height: 28px;
+  padding: 0.2rem 0.4rem;
   border-radius: 999px;
   background: #c89952;
   color: #2b2118;
@@ -90,10 +167,14 @@
 }
 
 .navbar__menu-button {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 4px;
+  width: 38px;
+  height: 38px;
   padding: 0.5rem;
-  border: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
   background: transparent;
   cursor: pointer;
 }
@@ -103,12 +184,28 @@
   height: 2px;
   display: block;
   background: #ffffff;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.navbar__menu-button[aria-expanded='true'] span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.navbar__menu-button[aria-expanded='true'] span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar__menu-button[aria-expanded='true'] span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 .navbar__navigation {
   display: none;
-  padding: 0.5rem 1rem 1rem;
-  background: #2b2118;
+  width: calc(100% - 2rem);
+  max-width: 1500px;
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  background: #2f2319;
 }
 
 .navbar__navigation--open {
@@ -116,14 +213,39 @@
 }
 
 .navbar__navigation a {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex: 1;
+  padding: 0.65rem 1rem;
   color: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
   text-decoration: none;
 }
 
 .navbar__navigation a:hover {
   color: #e3c28f;
+}
+
+.navbar__link--active {
+  position: relative;
+  isolation: isolate;
+  color: #cc994d !important;
+  font-weight: 700;
+  text-shadow:  2px rgba(200, 153, 82, 0);  
+}
+
+.navbar__link--active::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(200, 153, 82, 0.14) 0%,
+    rgba(200, 153, 82, 0.05) 48%,
+    transparent 78%
+  );
+  pointer-events: none;
 }
 
 .App__content {
@@ -138,15 +260,65 @@
   }
 
   .navbar__navigation {
-    width: min(100% - 2rem, 1360px);
-    margin: 0 auto;
     display: flex;
-    gap: 2rem;
-    padding: 0 0 1rem;
+    min-height: 42px;
   }
 
   .navbar__navigation a {
-    border-bottom: 0;
+    position: relative;
+  }
+
+  .navbar__navigation a + a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 1px;
+    height: 22px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(200, 153, 82, 0.55) 25%,
+      rgba(200, 153, 82, 0.55) 75%,
+      transparent
+    );
+    transform: translateY(-50%);
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar__inner {
+    min-height: 76px;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .navbar__brand,
+  .navbar__actions {
+    min-width: 0;
+  }
+
+  .navbar__name {
+    font-size: 0.95rem;
+  }
+
+  .navbar__tagline {
+    font-size: 0.5rem;
+  }
+
+  .navbar__search {
+    display: none;
+  }
+
+  .navbar__navigation--open {
+    display: grid;
+  }
+
+  .navbar__navigation a {
+    padding-left: 0;
+    padding-right: 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(200, 153, 82, 0.35);
   }
 }
 
