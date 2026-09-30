@@ -15,6 +15,7 @@ function App() {
   const [activePage, setActivePage] = useState(pageFromPath);
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeCategory, setActiveCategory] = useState('Todas');
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -49,13 +50,18 @@ function App() {
     const path = page === 'inicio' ? '/' : `/${page}`;
     window.history.pushState({}, '', path);
     setActivePage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function addToCart(product) {
     setCart((currentCart) => [...currentCart, product]);
   }
 
+  const categories = ['Todas', ...new Set(products.map((product) => product.categoria))];
+  const featuredProducts = products.filter((product) => product.destacado);
+
   const visibleProducts = products.filter((product) => {
+    if (activeCategory !== 'Todas' && product.categoria !== activeCategory) return false;
     const normalizedTerm = searchTerm.trim().toLowerCase();
     if (!normalizedTerm) return true;
     return [product.nombre, product.categoria, product.descripcionCorta]
@@ -73,21 +79,76 @@ function App() {
       />
       <main className="App__content">
         {activePage === 'inicio' && (
-          <section className="page-intro">
-            <p className="page-intro__eyebrow">Muebles artesanales</p>
-            <h1>Mueblería Hermanos Jota</h1>
-            <p>Diseño atemporal y piezas hechas para acompañar tu hogar.</p>
-            <button type="button" onClick={() => navigateTo('productos')}>Ver catálogo</button>
-          </section>
+          <>
+            <section className="hero">
+              <div className="hero__text">
+                <p className="eyebrow">Muebles artesanales</p>
+                <h1>Cada pieza cuenta la historia de manos expertas</h1>
+                <p className="hero__lead">
+                  Diseño atemporal en maderas nobles, pensado para acompañar tu hogar durante generaciones.
+                </p>
+                <div className="hero__actions">
+                  <button type="button" className="button" onClick={() => navigateTo('productos')}>Ver catálogo</button>
+                  <button type="button" className="button button--ghost" onClick={() => navigateTo('contacto')}>Hablemos</button>
+                </div>
+                <ul className="hero__facts">
+                  <li><strong>FSC®</strong> Maderas certificadas</li>
+                  <li><strong>{products.length || '—'}</strong> Piezas de autor</li>
+                  <li><strong>Nogal</strong> Roble y lino natural</li>
+                </ul>
+              </div>
+              <div className="hero__media">
+                <img src="/assets/img/sofa-patagonia.png" alt="Sofá Patagonia en lino Warm Alabaster" />
+                <span className="hero__badge">Sofá Patagonia</span>
+              </div>
+            </section>
+
+            <section className="section">
+              <div className="section__header">
+                <div>
+                  <p className="eyebrow">Destacados</p>
+                  <h2>Piezas que enamoran</h2>
+                </div>
+                <button type="button" className="link-button" onClick={() => navigateTo('productos')}>Ver todo →</button>
+              </div>
+              <ProductList
+                products={featuredProducts}
+                loading={loading}
+                error={error}
+                onAddToCart={addToCart}
+              />
+            </section>
+          </>
         )}
 
         {activePage === 'productos' && (
-          <section>
+          <section className="section">
             <div className="page-heading">
-              <p className="page-intro__eyebrow">Catálogo</p>
+              <p className="eyebrow">Catálogo</p>
               <h1>Todos nuestros productos</h1>
-              <p>{visibleProducts.length} productos disponibles</p>
+              <p>{visibleProducts.length} piezas disponibles</p>
             </div>
+
+            <div className="filters" role="group" aria-label="Filtrar por categoría">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  className={category === activeCategory ? 'chip chip--active' : 'chip'}
+                  aria-pressed={category === activeCategory}
+                  onClick={() => setActiveCategory(category)}
+                >
+                  {category}
+                </button>
+              ))}
+              {searchTerm && (
+                <button type="button" className="chip chip--search" onClick={() => setSearchTerm('')}>
+                  “{searchTerm}” <span aria-hidden="true">✕</span>
+                  <span className="sr-only">Quitar búsqueda</span>
+                </button>
+              )}
+            </div>
+
             <ProductList
               products={visibleProducts}
               loading={loading}
@@ -98,14 +159,24 @@ function App() {
         )}
 
         {activePage === 'contacto' && (
-          <section className="page-heading">
-            <p className="page-intro__eyebrow">Contacto</p>
-            <h1>Hablemos contigo</h1>
-            <p>Escríbenos para cualquier consulta sobre nuestros muebles.</p>
+          <section className="contact-card">
+            <p className="eyebrow">Contacto</p>
+            <h1>Hablemos</h1>
+            <p>Contanos qué pieza estás buscando y te ayudamos a encontrarla.</p>
             <ContactForm />
           </section>
         )}
       </main>
+
+      <footer className="footer">
+        <div className="footer__inner">
+          <span className="footer__brand">
+            <img src="/LogoHermanosJota.png" alt="" aria-hidden="true" />
+            Hermanos Jota
+          </span>
+          <p>© {new Date().getFullYear()} Hermanos Jota </p>
+        </div>
+      </footer>
     </div>
   );
 }

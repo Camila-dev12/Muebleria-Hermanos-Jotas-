@@ -2,7 +2,19 @@ import ProductCard from './ProductCard';
 
 function ProductList({ products, loading, error, onAddToCart }) {
   if (loading) {
-    return <p className="catalog-message">Cargando productos...</p>;
+    return (
+      <div className="product-list" aria-busy="true" aria-label="Cargando productos">
+        {Array.from({ length: 6 }, (_, index) => (
+          <div key={index} className="product-card product-card--skeleton" aria-hidden="true">
+            <div className="product-card__media" />
+            <div className="product-card__body">
+              <span />
+              <span />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   if (error) {
@@ -10,7 +22,7 @@ function ProductList({ products, loading, error, onAddToCart }) {
   }
 
   if (products.length === 0) {
-    return <p className="catalog-message">No encontramos productos.</p>;
+    return <p className="catalog-message">Todavía no tenemos una pieza así. Probá con otra búsqueda.</p>;
   }
 
   return (
