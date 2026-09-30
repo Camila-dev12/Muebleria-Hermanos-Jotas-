@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import ProductList from './components/ProductList';
+import ContactForm from './components/ContactForm';
 
 const pageFromPath = () => {
   const path = window.location.pathname;
@@ -161,7 +162,8 @@ function App() {
           <section className="contact-card">
             <p className="eyebrow">Contacto</p>
             <h1>Hablemos</h1>
-            <p>Contanos qué pieza estás buscando y te ayudamos a encontrarla. Muy pronto vas a poder escribirnos desde acá.</p>
+            <p>Contanos qué pieza estás buscando y te ayudamos a encontrarla.</p>
+            <ContactForm />
           </section>
         )}
       </main>

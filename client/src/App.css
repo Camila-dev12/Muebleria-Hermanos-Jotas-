@@ -678,6 +678,66 @@ h3 {
   color: var(--color-texto-suave);
 }
 
+.contact-form {
+  display: grid;
+  gap: 1.1rem;
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  color: var(--color-espresso);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--color-borde);
+  border-radius: 14px;
+  background: var(--color-alabastro);
+  color: var(--color-texto);
+  font: inherit;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.form-group textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-siena);
+  box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
+}
+
+.contact-form button {
+  justify-self: center;
+  padding: 0.85rem 2rem;
+  border: 1.5px solid var(--color-siena);
+  border-radius: 999px;
+  background: var(--color-siena);
+  color: var(--color-blanco);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.contact-form button:hover {
+  background: var(--color-siena-oscuro);
+  transform: translateY(-1px);
+}
+
 /* ---------- Footer ---------- */
 
 .footer {
