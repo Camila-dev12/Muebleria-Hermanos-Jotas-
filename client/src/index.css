@@ -1,8 +1,42 @@
+:root {
+  /* Paleta de marca */
+  --color-siena: #A0522D;         /* Siena Tostado: marca, títulos */
+  --color-salvia: #87A96B;        /* Verde Salvia: sustentabilidad */
+  --color-alabastro: #F5E6D3;     /* Alabastro Cálido: fondos */
+  --color-oro: #D4A437;           /* Vara de Oro: detalles premium */
+  --color-rosa: #C47A6D;          /* Rosa Polvoriento: acentos suaves */
+
+  /* Tonos derivados (contraste y bordes) */
+  --color-siena-oscuro: #7E3F21;
+  --color-espresso: #3A1F12;
+  --color-espresso-claro: #4A2A1A;
+  --color-oro-claro: #E8C878;
+  --color-borde: #E3CBAE;
+  --color-texto: #3A2A20;
+  --color-texto-suave: #6B5A4C;
+  --color-blanco: #ffffff;
+  --color-error: #b3261e;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --radius: 20px;
+  --shadow-sm: 0 1px 2px rgba(58, 31, 18, 0.06), 0 4px 12px rgba(58, 31, 18, 0.06);
+  --shadow-lg: 0 2px 4px rgba(58, 31, 18, 0.06), 0 18px 40px rgba(58, 31, 18, 0.14);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  background: var(--color-alabastro);
+  color: var(--color-texto);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Helvetica Neue', sans-serif;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
