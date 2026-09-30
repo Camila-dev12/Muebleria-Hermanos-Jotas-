@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const apiRouter = require('./routes');
 const logger = require('./middlewares/logger');
@@ -9,6 +10,9 @@ const app = express();
 // Middlewares globales
 app.use(logger);
 app.use(express.json());
+
+// Imágenes de productos (carpeta assets/ en la raíz del repo)
+app.use('/assets', express.static(path.join(__dirname, '..', '..', 'assets')));
 
 // Rutas
 app.use('/api', apiRouter);
