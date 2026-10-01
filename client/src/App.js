@@ -3,6 +3,7 @@ import './App.css';
 import Navbar from './components/Navbar';
 import ProductList from './components/ProductList';
 import ContactForm from './components/ContactForm';
+import ProductDetail from './components/ProductDetail';
 
 const pageFromPath = () => {
   const path = window.location.pathname;
@@ -17,6 +18,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('Todas');
   const [cart, setCart] = useState([]);
+  const [selectedProductId, setSelectedProductId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -50,7 +52,17 @@ function App() {
     const path = page === 'inicio' ? '/' : `/${page}`;
     window.history.pushState({}, '', path);
     setActivePage(page);
+    setSelectedProductId(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function openProduct(id) {
+    setSelectedProductId(id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function closeProduct() {
+    setSelectedProductId(null);
   }
 
   function addToCart(product) {
@@ -78,7 +90,14 @@ function App() {
         onSearch={setSearchTerm}
       />
       <main className="App__content">
-        {activePage === 'inicio' && (
+        {selectedProductId && (
+          <ProductDetail
+            productId={selectedProductId}
+            onBack={closeProduct}
+          />
+        )}
+
+        {!selectedProductId && activePage === 'inicio' && (
           <>
             <section className="hero">
               <div className="hero__text">
@@ -116,12 +135,13 @@ function App() {
                 loading={loading}
                 error={error}
                 onAddToCart={addToCart}
+                onSelect={openProduct}
               />
             </section>
           </>
         )}
 
-        {activePage === 'productos' && (
+        {!selectedProductId && activePage === 'productos' && (
           <section className="section">
             <div className="page-heading">
               <p className="eyebrow">Catálogo</p>
@@ -154,11 +174,12 @@ function App() {
               loading={loading}
               error={error}
               onAddToCart={addToCart}
+              onSelect={openProduct}
             />
           </section>
         )}
 
-        {activePage === 'contacto' && (
+        {!selectedProductId && activePage === 'contacto' && (
           <section className="contact-card">
             <p className="eyebrow">Contacto</p>
             <h1>Hablemos</h1>
