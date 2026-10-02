@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import ProductList from './components/ProductList';
 import ContactForm from './components/ContactForm';
 import ProductDetail from './components/ProductDetail';
+import Footer from './components/Footer';
 
 const pageFromPath = () => {
   const path = window.location.pathname;
@@ -113,7 +114,7 @@ function App() {
                 <ul className="hero__facts">
                   <li><strong>FSC®</strong> Maderas certificadas</li>
                   <li><strong>{products.length || '—'}</strong> Piezas de autor</li>
-                  <li><strong>Nogal</strong> Roble y lino natural</li>
+                  <li><strong>Algarrobo</strong> Quebracho y caldén</li>
                 </ul>
               </div>
               <div className="hero__media">
@@ -189,15 +190,7 @@ function App() {
         )}
       </main>
 
-      <footer className="footer">
-        <div className="footer__inner">
-          <span className="footer__brand">
-            <img src="/LogoHermanosJota.png" alt="" aria-hidden="true" />
-            Hermanos Jota
-          </span>
-          <p>© {new Date().getFullYear()} Hermanos Jota </p>
-        </div>
-      </footer>
+      <Footer onNavigate={navigateTo} />
     </div>
   );
 }
