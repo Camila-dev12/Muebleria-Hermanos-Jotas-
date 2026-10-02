@@ -11,8 +11,8 @@ const app = express();
 app.use(logger);
 app.use(express.json());
 
-// Imágenes de productos (carpeta assets/ en la raíz del repo)
-app.use('/assets', express.static(path.join(__dirname, '..', '..', 'assets')));
+// Imágenes de productos (carpeta assets/ en backend/public/)
+app.use('/assets', express.static(path.join(__dirname, '..', 'public', 'assets')));
 
 // Rutas
 app.use('/api', apiRouter);
