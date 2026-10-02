@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function ProductCard({ product, onAddToCart }) {
+function ProductCard({ product, onAddToCart, onSelect }) {
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -16,12 +16,22 @@ function ProductCard({ product, onAddToCart }) {
 
   return (
     <article className="product-card">
-      <div className="product-card__media">
-        <img className="product-card__image" src={`/${product.img}`} alt={product.nombre} loading="lazy" />
+      <button
+        type="button"
+        className="product-card__media"
+        onClick={() => onSelect(product.id)}
+        tabIndex={-1}
+        aria-hidden="true"
+      >
+        <img className="product-card__image" src={`/${product.img}`} alt="" loading="lazy" />
         <span className="product-card__category">{product.categoria}</span>
-      </div>
+      </button>
       <div className="product-card__body">
-        <h3>{product.nombre}</h3>
+        <h3>
+          <button type="button" className="product-card__link" onClick={() => onSelect(product.id)}>
+            {product.nombre}
+          </button>
+        </h3>
         <p>{product.descripcionCorta}</p>
         <div className="product-card__footer">
           <strong>${product.precio.toLocaleString('es-AR')}</strong>
