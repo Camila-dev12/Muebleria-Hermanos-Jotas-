@@ -71,7 +71,7 @@ function Navbar({ cartCount = 0, activePage = 'inicio', searchTerm = '', showSea
         </nav>
 
         <div className="navbar__actions">
-          <a className="navbar__cart" href="/productos" aria-label={`Ver carrito, ${cartCount} productos`}>
+          <a className="navbar__cart" href="/productos" onClick={(event) => navigate(event, 'productos')} aria-label={`Ver carrito, ${cartCount} productos`}>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="9" cy="20" r="1.4" />
               <circle cx="17" cy="20" r="1.4" />
