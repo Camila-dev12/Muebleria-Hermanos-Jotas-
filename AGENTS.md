@@ -12,6 +12,12 @@ Este archivo define la identidad, el stack tecnológico y las reglas base que el
 - **Frontend Actual:** React SPA (Componentes Funcionales, Hooks, Fetch).
 - **Backend Actual:** Node.js + Express (API REST).
 - **Persistencia Actual:** En memoria (archivos JS). Sin bases de datos por el momento.
+- **Sprint en curso (5 y 6) — migración en progreso:** ver `docs/sprints/sprint_5_6.md`.
+  - Persistencia: MongoDB en la nube con Mongoose (reemplaza los datos en memoria).
+  - Backend: CRUD completo (`GET`, `POST`, `PUT`, `DELETE`) sobre `/api/productos`.
+  - Frontend: React Router DOM (`useParams`, `useNavigate`) en lugar del renderizado condicional de vistas.
+  - Configuración: secretos y URLs en variables de entorno (`.env`).
+  - Despliegue: frontend en Vercel/Netlify, backend en Render.
 
 ## 3. Directrices Arquitectónicas Universales
 - **Estructura Monorepo:** Respetar estrictamente la separación de responsabilidades: `/backend` para el servidor y `/client` para la interfaz.
@@ -22,3 +28,5 @@ Este archivo define la identidad, el stack tecnológico y las reglas base que el
 - **Idioma del Código:** Mantener variables, funciones y nombres de componentes en el idioma predominante del proyecto (inglés o mantener coherencia con lo existente).
 - **Cero Deuda Técnica Consciente:** No dejar "TODOs" funcionales sin implementar.
 - **Contexto Antes de Codear:** Antes de implementar un endpoint o vista nueva, el agente SIEMPRE debe consultar `docs/api_contracts.md` y las consignas en `docs/sprints/` para asegurarse de no romper reglas establecidas en fases anteriores.
+- **Contratos Actualizados:** Al crear o modificar un endpoint, actualizar `docs/api_contracts.md` en el mismo cambio.
+- **Secretos Fuera del Repo:** Nunca commitear archivos `.env` ni credenciales (por ejemplo, la URI de MongoDB). Documentar las variables necesarias en un `.env.example` sin valores reales.
