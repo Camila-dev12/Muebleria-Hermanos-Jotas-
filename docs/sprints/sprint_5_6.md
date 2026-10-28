@@ -51,6 +51,15 @@ React Client (Frontend)  ⇄  Express API (Backend)  ⇄  MongoDB (Persistencia)
 | `/productos/:id`         | Detalle (`useParams`)       |
 | `/contacto`              | Formulario de contacto      |
 | `/admin/crear-producto`  | Alta de producto            |
+| `/admin/editar-producto/:id` | Edición de producto *(agregada, ver nota)* |
+
+### Decisiones del equipo
+- **Ruta de edición:** la consigna pide editar productos desde el frontend pero no listaba una ruta para eso. Con el OK del profesor se agrega `/admin/editar-producto/:id`, que carga el producto con `GET /api/productos/:id` y guarda los cambios con `PUT /api/productos/:id`.
+- **Eliminación:** el botón de eliminar llama a `DELETE /api/productos/:id` y luego redirige al catálogo con `useNavigate`.
+- **Campos del modelo:** el schema de Mongoose mantiene los 15 campos que ya usaban los productos del Sprint 3-4 (`categoria`, `medidas`, `colores`, etc.). Los 5 campos de la consigna son el mínimo requerido.
+- **Imagen:** se mantiene el nombre `img` en lugar de `imagenUrl` para no romper el frontend existente.
+- **Identificador:** el `id` numérico se reemplaza por el `_id` (ObjectId) que genera MongoDB, tanto en la API como en el frontend.
+- **Sin autenticación:** el proyecto todavía no tiene usuarios, así que las vistas `/admin/...` quedan accesibles para todos en esta etapa. Todas las vistas de administración viven bajo el prefijo `/admin` para poder protegerlas en bloque cuando se incorpore el login.
 
 ## 5. Entregables
 - Repositorio GitHub con las carpetas `/client` y `/backend`.
