@@ -62,6 +62,12 @@ Completa `backend/.env` con tus valores:
 
 > El archivo `.env` contiene credenciales y **no se sube al repositorio**.
 
+Si la base está vacía, carga los productos iniciales:
+```bash
+npm run seed
+```
+Si la base ya tiene productos, el script no hace nada. Para borrarlos y volver a cargar los iniciales, usa `npm run seed -- --reset`.
+
 Luego inicia el servidor:
 ```bash
 npm run dev
