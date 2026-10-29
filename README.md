@@ -44,10 +44,32 @@ cd muebleria-hermanos-jota
 ```
 
 ### 2. Levantar el Backend (Express)
+Desde el Sprint 5, el backend necesita una base de datos **MongoDB** (por ejemplo, un cluster gratuito de MongoDB Atlas).
+
 Abre una terminal y ejecuta:
 ```bash
 cd backend
 npm install
+cp .env.example .env
+```
+Completa `backend/.env` con tus valores:
+
+| Variable      | Obligatoria | Descripción                                              |
+|---------------|-------------|----------------------------------------------------------|
+| `MONGODB_URI` | Sí          | URI de conexión de MongoDB (Atlas > Connect > Drivers).  |
+| `PORT`        | No          | Puerto del servidor. Por defecto `3001`.                 |
+| `DNS_SERVERS` | No          | Solo si aparece el error `querySrv ECONNREFUSED` al iniciar. Usar `8.8.8.8,1.1.1.1`. |
+
+> El archivo `.env` contiene credenciales y **no se sube al repositorio**.
+
+Si la base está vacía, carga los productos iniciales:
+```bash
+npm run seed
+```
+Si la base ya tiene productos, el script no hace nada. Para borrarlos y volver a cargar los iniciales, usa `npm run seed -- --reset`.
+
+Luego inicia el servidor:
+```bash
 npm run dev
 ```
 
