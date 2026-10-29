@@ -23,7 +23,18 @@ function requerida(nombre) {
   return valor;
 }
 
+/**
+ * Lista separada por comas (ej. "8.8.8.8,1.1.1.1"). Vacía si no se define.
+ */
+function lista(nombre) {
+  return (process.env[nombre] || '')
+    .split(',')
+    .map((valor) => valor.trim())
+    .filter(Boolean);
+}
+
 module.exports = {
   PORT: process.env.PORT || 3001,
   MONGODB_URI: requerida('MONGODB_URI'),
+  DNS_SERVERS: lista('DNS_SERVERS'),
 };
