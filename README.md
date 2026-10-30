@@ -102,3 +102,35 @@ Para correr los tests del frontend:
 cd client
 npm test
 ```
+
+---
+
+## ☁️ Despliegue
+
+| Parte    | Servicio | Carpeta raíz | Build | Inicio |
+|----------|----------|--------------|-------|--------|
+| Backend  | Render (Web Service) | `backend` | `npm install` | `npm start` |
+| Frontend | Vercel | `client` | `npm run build` (automático) | — |
+
+### Variables de entorno en producción
+
+**Render (backend):**
+
+| Variable       | Valor |
+|----------------|-------|
+| `MONGODB_URI`  | URI de MongoDB Atlas (la misma del `.env` local). |
+| `CORS_ORIGINS` | URL del frontend en Vercel, ej. `https://mi-sitio.vercel.app`. Si hay más de una, separarlas con comas. |
+
+> En Atlas, **Network Access** debe permitir `0.0.0.0/0`, porque Render no tiene una IP fija.
+
+**Vercel (frontend):**
+
+| Variable            | Valor |
+|---------------------|-------|
+| `REACT_APP_API_URL` | URL del backend en Render, sin barra final, ej. `https://mi-backend.onrender.com`. |
+
+> Vercel lee esta variable **al compilar**: si se cambia, hay que volver a desplegar (Deployments → Redeploy).
+>
+> El archivo `client/vercel.json` redirige todas las rutas a `index.html`, para que al recargar o compartir links como `/productos/:id` no aparezca un 404.
+
+**Plan gratuito de Render:** el backend se "duerme" después de 15 minutos sin uso. La primera visita después de eso puede tardar alrededor de un minuto en cargar los productos.
