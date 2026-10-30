@@ -1,14 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Footer = ({ onNavigate }) => {
+const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  const handleNav = (e, page) => {
-    e.preventDefault();
-    if (onNavigate) {
-      onNavigate(page);
-    }
-  };
 
   return (
     <footer className="footer">
@@ -24,10 +18,9 @@ const Footer = ({ onNavigate }) => {
         <div className="footer__column">
           <h3 className="footer__title">Navegación</h3>
           <ul className="footer__links">
-            {/* Navegación mediante SPA Router interno */}
-            <li><a href="/" onClick={(e) => handleNav(e, 'inicio')}>Inicio</a></li>
-            <li><a href="/productos" onClick={(e) => handleNav(e, 'productos')}>Productos</a></li>
-            <li><a href="/contacto" onClick={(e) => handleNav(e, 'contacto')}>Contacto</a></li>
+            <li><Link to="/">Inicio</Link></li>
+            <li><Link to="/productos">Productos</Link></li>
+            <li><Link to="/contacto">Contacto</Link></li>
           </ul>
         </div>
         
