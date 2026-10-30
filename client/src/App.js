@@ -1,196 +1,76 @@
 import { useEffect, useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
-import ProductList from './components/ProductList';
-import ContactForm from './components/ContactForm';
-import ProductDetail from './components/ProductDetail';
 import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import CatalogPage from './pages/CatalogPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import ContactPage from './pages/ContactPage';
+import AdminPage from './pages/AdminPage';
+import ProductFormPage from './pages/ProductFormPage';
+import NotFoundPage from './pages/NotFoundPage';
 
-const pageFromPath = () => {
-  const path = window.location.pathname;
-  if (path === '/productos') return 'productos';
-  if (path === '/contacto') return 'contacto';
-  return 'inicio';
-};
+/** Vuelve al principio de la página cada vez que cambia la ruta. */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
-  const [activePage, setActivePage] = useState(pageFromPath);
-  const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState('Todas');
-  const [cart, setCart] = useState([]);
-  const [selectedProductId, setSelectedProductId] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  // Cada ítem del carrito: { product, quantity }
+  const [cartItems, setCartItems] = useState([]);
 
-  useEffect(() => {
-    function handleBackOrForward() {
-      setActivePage(pageFromPath());
-    }
-
-    window.addEventListener('popstate', handleBackOrForward);
-    return () => window.removeEventListener('popstate', handleBackOrForward);
-  }, []);
-
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const response = await fetch('/api/productos?limit=50');
-        if (!response.ok) throw new Error('No se pudo obtener el catálogo.');
-        const result = await response.json();
-        setProducts(result.data);
-      } catch (requestError) {
-        setError(requestError.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadProducts();
-  }, []);
-
-  function navigateTo(page) {
-    const path = page === 'inicio' ? '/' : `/${page}`;
-    window.history.pushState({}, '', path);
-    setActivePage(page);
-    setSelectedProductId(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function openProduct(id) {
-    setSelectedProductId(id);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function closeProduct() {
-    setSelectedProductId(null);
-  }
-
+  /** Suma una unidad. No supera el stock del producto, si lo tiene definido. */
   function addToCart(product) {
-    setCart((currentCart) => [...currentCart, product]);
+    setCartItems((items) => {
+      const item = items.find((current) => current.product._id === product._id);
+      if (!item) return [...items, { product, quantity: 1 }];
+      if (product.stock != null && item.quantity >= product.stock) return items;
+      return items.map((current) => (current === item ? { ...current, quantity: current.quantity + 1 } : current));
+    });
   }
 
-  const categories = ['Todas', ...new Set(products.map((product) => product.categoria))];
-  const featuredProducts = products.filter((product) => product.destacado);
+  /** Resta una unidad. Si llega a 0, el producto sale del carrito. */
+  function removeFromCart(productId) {
+    setCartItems((items) =>
+      items
+        .map((item) => (item.product._id === productId ? { ...item, quantity: item.quantity - 1 } : item))
+        .filter((item) => item.quantity > 0)
+    );
+  }
 
-  const visibleProducts = products.filter((product) => {
-    if (activeCategory !== 'Todas' && product.categoria !== activeCategory) return false;
-    const normalizedTerm = searchTerm.trim().toLowerCase();
-    if (!normalizedTerm) return true;
-    return [product.nombre, product.categoria, product.descripcionCorta]
-      .some((value) => value.toLowerCase().includes(normalizedTerm));
-  });
+  function quantityOf(productId) {
+    return cartItems.find((item) => item.product._id === productId)?.quantity ?? 0;
+  }
+
+  const cart = { quantityOf, add: addToCart, remove: removeFromCart };
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <div className="App">
-      <Navbar
-        cartCount={cart.length}
-        activePage={activePage}
-        searchTerm={searchTerm}
-        onNavigate={navigateTo}
-        onSearch={setSearchTerm}
-      />
+      <ScrollToTop />
+      <Navbar cartCount={cartCount} />
       <main className="App__content">
-        {selectedProductId && (
-          <ProductDetail
-            productId={selectedProductId}
-            onBack={closeProduct}
-          />
-        )}
-
-        {!selectedProductId && activePage === 'inicio' && (
-          <>
-            <section className="hero">
-              <div className="hero__text">
-                <p className="eyebrow">Muebles artesanales</p>
-                <h1>Cada pieza cuenta la historia de manos expertas</h1>
-                <p className="hero__lead">
-                  Diseño atemporal en maderas nobles, pensado para acompañar tu hogar durante generaciones.
-                </p>
-                <div className="hero__actions">
-                  <button type="button" className="button" onClick={() => navigateTo('productos')}>Ver catálogo</button>
-                  <button type="button" className="button button--ghost" onClick={() => navigateTo('contacto')}>Hablemos</button>
-                </div>
-                <ul className="hero__facts">
-                  <li><strong>FSC®</strong> Maderas certificadas</li>
-                  <li><strong>{products.length || '—'}</strong> Piezas de autor</li>
-                  <li><strong>Algarrobo</strong> Quebracho y caldén</li>
-                </ul>
-              </div>
-              <div className="hero__media">
-                <img src="/assets/img/sofa-patagonia.png" alt="Sofá Patagonia en lino Warm Alabaster" />
-                <span className="hero__badge">Sofá Patagonia</span>
-              </div>
-            </section>
-
-            <section className="section">
-              <div className="section__header">
-                <div>
-                  <p className="eyebrow">Destacados</p>
-                  <h2>Piezas que enamoran</h2>
-                </div>
-                <button type="button" className="link-button" onClick={() => navigateTo('productos')}>Ver todo →</button>
-              </div>
-              <ProductList
-                products={featuredProducts}
-                loading={loading}
-                error={error}
-                onAddToCart={addToCart}
-                onSelect={openProduct}
-              />
-            </section>
-          </>
-        )}
-
-        {!selectedProductId && activePage === 'productos' && (
-          <section className="section">
-            <div className="page-heading">
-              <p className="eyebrow">Catálogo</p>
-              <h1>Todos nuestros productos</h1>
-              <p>{visibleProducts.length} piezas disponibles</p>
-            </div>
-
-            <div className="filters" role="group" aria-label="Filtrar por categoría">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  className={category === activeCategory ? 'chip chip--active' : 'chip'}
-                  aria-pressed={category === activeCategory}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                </button>
-              ))}
-              {searchTerm && (
-                <button type="button" className="chip chip--search" onClick={() => setSearchTerm('')}>
-                  “{searchTerm}” <span aria-hidden="true">✕</span>
-                  <span className="sr-only">Quitar búsqueda</span>
-                </button>
-              )}
-            </div>
-
-            <ProductList
-              products={visibleProducts}
-              loading={loading}
-              error={error}
-              onAddToCart={addToCart}
-              onSelect={openProduct}
-            />
-          </section>
-        )}
-
-        {!selectedProductId && activePage === 'contacto' && (
-          <section className="contact-card">
-            <p className="eyebrow">Contacto</p>
-            <h1>Hablemos</h1>
-            <p>Contanos qué pieza estás buscando y te ayudamos a encontrarla.</p>
-            <ContactForm />
-          </section>
-        )}
+        <Routes>
+          <Route path="/" element={<HomePage cart={cart} />} />
+          <Route path="/productos" element={<CatalogPage cart={cart} />} />
+          <Route path="/productos/:id" element={<ProductDetailPage cart={cart} />} />
+          <Route path="/contacto" element={<ContactPage />} />
+          {/* Vistas de administración: sin autenticación en esta etapa (ver docs/sprints/sprint_5_6.md) */}
+          <Route path="/admin" element={<AdminPage />} />
+          {/* key: crear y editar usan el mismo componente; la key evita que se comparta el estado entre ambas */}
+          <Route path="/admin/crear-producto" element={<ProductFormPage key="crear" />} />
+          <Route path="/admin/editar-producto/:id" element={<ProductFormPage key="editar" />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </main>
-
-      <Footer onNavigate={navigateTo} />
+      <Footer />
     </div>
   );
 }

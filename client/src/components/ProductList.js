@@ -1,6 +1,6 @@
 import ProductCard from './ProductCard';
 
-function ProductList({ products, loading, error, onAddToCart, onSelect }) {
+function ProductList({ products, loading, error, cart }) {
   if (loading) {
     return (
       <div className="product-list" aria-busy="true" aria-label="Cargando productos">
@@ -28,7 +28,7 @@ function ProductList({ products, loading, error, onAddToCart, onSelect }) {
   return (
     <section className="product-list" aria-label="Catálogo de productos">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onSelect={onSelect} />
+        <ProductCard key={product._id} product={product} cart={cart} />
       ))}
     </section>
   );

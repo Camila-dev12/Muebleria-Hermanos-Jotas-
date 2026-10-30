@@ -33,9 +33,26 @@ async function seed() {
 
   // El id numérico se descarta: MongoDB genera el _id de cada producto.
   const documentos = productos.map(({ id, ...producto }) => producto);
-  const insertados = await Product.insertMany(documentos);
+  avisarCamposDescartados(documentos);
 
+  const insertados = await Product.insertMany(documentos);
   console.log(`Se cargaron ${insertados.length} productos.`);
+}
+
+/**
+ * Mongoose descarta en silencio los campos que no están en el schema.
+ * Los listamos para que no se pierdan datos sin que nadie se entere.
+ */
+function avisarCamposDescartados(documentos) {
+  const camposDelSchema = new Set(Object.keys(Product.schema.paths));
+
+  documentos.forEach((documento) => {
+    const descartados = Object.keys(documento).filter((campo) => !camposDelSchema.has(campo));
+
+    if (descartados.length > 0) {
+      console.warn(`Aviso: "${documento.nombre}" tiene campos fuera del modelo que no se guardan: ${descartados.join(', ')}`);
+    }
+  });
 }
 
 seed()

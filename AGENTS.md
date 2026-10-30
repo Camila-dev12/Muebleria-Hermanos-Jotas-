@@ -9,20 +9,17 @@ Este archivo define la identidad, el stack tecnológico y las reglas base que el
 
 ## 2. Stack Tecnológico Base (Actualizable)
 *Nota: Este stack crece con cada sprint. Revisar la carpeta `docs/sprints/` para confirmar requerimientos del sprint en curso.*
-- **Frontend Actual:** React SPA (Componentes Funcionales, Hooks, Fetch).
-- **Backend Actual:** Node.js + Express (API REST).
-- **Persistencia Actual:** En memoria (archivos JS). Sin bases de datos por el momento.
-- **Sprint en curso (5 y 6) — migración en progreso:** ver `docs/sprints/sprint_5_6.md`.
-  - Persistencia: MongoDB en la nube con Mongoose (reemplaza los datos en memoria).
-  - Backend: CRUD completo (`GET`, `POST`, `PUT`, `DELETE`) sobre `/api/productos`.
-  - Frontend: React Router DOM (`useParams`, `useNavigate`) en lugar del renderizado condicional de vistas.
-  - Configuración: secretos y URLs en variables de entorno (`.env`).
-  - Despliegue: frontend en Vercel/Netlify, backend en Render.
+- **Frontend Actual:** React SPA (Componentes Funcionales, Hooks, Fetch) con React Router DOM (`useParams`, `useNavigate`, `useSearchParams`).
+- **Backend Actual:** Node.js + Express (API REST) con CRUD completo sobre `/api/productos`.
+- **Persistencia Actual:** MongoDB Atlas con Mongoose. Los datos iniciales se cargan con `npm run seed` desde `backend/src/data/productos.js`.
+- **Configuración:** secretos y URLs en variables de entorno (`backend/.env`, documentadas en `backend/.env.example`). Todo acceso a `process.env` del backend pasa por `backend/src/config/env.js`.
+- **Pendiente del Sprint 5-6:** despliegue del frontend en Vercel/Netlify y del backend en Render (ver `docs/sprints/sprint_5_6.md`).
 
 ## 3. Directrices Arquitectónicas Universales
 - **Estructura Monorepo:** Respetar estrictamente la separación de responsabilidades: `/backend` para el servidor y `/client` para la interfaz.
 - **Escalabilidad del Código:** Escribir código pensado para evolucionar. (Ej. Centralizar peticiones HTTP en servicios para que cuando cambie el backend, solo se toque un archivo; modularizar rutas en Express).
 - **Manejo de Estados Asíncronos:** Toda petición de red en el frontend debe manejar explícitamente los estados: `loading`, `success`, y `error`.
+- **Peticiones HTTP del Frontend:** Todas pasan por `client/src/services/productsService.js`. Los componentes y páginas nunca llaman a `fetch` directamente.
 
 ## 4. Reglas de Código
 - **Idioma del Código:** Mantener variables, funciones y nombres de componentes en el idioma predominante del proyecto (inglés o mantener coherencia con lo existente).
