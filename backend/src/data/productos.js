@@ -1,6 +1,7 @@
 // =====================================================
-// Mueblería Hermanos Jota — Base de datos de productos
-// Datos optimizados para reflejar la calidad artesanal
+// Mueblería Hermanos Jota — Productos iniciales
+// Desde el Sprint 5 los productos viven en MongoDB. Este archivo
+// solo se usa para cargarlos en la base con `npm run seed`.
 // =====================================================
 
 const productos = [
