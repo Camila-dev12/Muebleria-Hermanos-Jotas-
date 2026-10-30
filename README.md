@@ -1,5 +1,13 @@
 # 🛋️ E-commerce Mueblería Hermanos Jota
-https://muebleria-hermanos-jota-beta.vercel.app 
+
+### 🔗 Enlaces
+| | URL |
+|---|---|
+| **Sitio (Sprints 5 y 6)** — React, desplegado en Vercel | https://muebleria-hermanos-jotas.vercel.app |
+| **API REST** — Express, desplegada en Render | https://muebleria-hermanos-jota-api-yuwz.onrender.com/api/productos |
+| Sitio estático original (Sprints 1 y 2) | https://muebleria-hermanos-jota-beta.vercel.app |
+
+> La API usa el plan gratuito de Render: si estuvo un rato sin uso, la primera carga de productos puede tardar alrededor de un minuto.
 
 **Grupo 15 — Comisión 2TT**
 
@@ -54,8 +62,8 @@ A partir de los Sprints 3 y 4, el proyecto requiere levantar dos servidores loca
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/tu-usuario/muebleria-hermanos-jota.git
-cd muebleria-hermanos-jota
+git clone https://github.com/Camila-dev12/Muebleria-Hermanos-Jotas-.git
+cd Muebleria-Hermanos-Jotas-
 ```
 
 ### 2. Levantar el Backend (Express)
@@ -107,10 +115,12 @@ npm test
 
 ## ☁️ Despliegue
 
-| Parte    | Servicio | Carpeta raíz | Build | Inicio |
-|----------|----------|--------------|-------|--------|
-| Backend  | Render (Web Service) | `backend` | `npm install` | `npm start` |
-| Frontend | Vercel | `client` | `npm run build` (automático) | — |
+| Parte    | Servicio | URL | Carpeta raíz | Build | Inicio |
+|----------|----------|-----|--------------|-------|--------|
+| Backend  | Render (Web Service) | https://muebleria-hermanos-jota-api-yuwz.onrender.com | `backend` | `npm install` | `npm start` |
+| Frontend | Vercel | https://muebleria-hermanos-jotas.vercel.app | `client` | `npm run build` (automático) | — |
+
+> El servicio de Render está conectado al repositorio por URL pública, así que **no se redespliega solo**: después de mergear cambios del backend en `main`, hay que entrar al servicio y usar **Manual Deploy → Deploy latest commit**. Vercel sí redespliega automáticamente con cada merge a `main`.
 
 ### Variables de entorno en producción
 

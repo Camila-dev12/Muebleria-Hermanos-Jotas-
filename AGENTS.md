@@ -13,7 +13,7 @@ Este archivo define la identidad, el stack tecnológico y las reglas base que el
 - **Backend Actual:** Node.js + Express (API REST) con CRUD completo sobre `/api/productos`.
 - **Persistencia Actual:** MongoDB Atlas con Mongoose. Los datos iniciales se cargan con `npm run seed` desde `backend/src/data/productos.js`.
 - **Configuración:** secretos y URLs en variables de entorno (`backend/.env`, documentadas en `backend/.env.example`). Todo acceso a `process.env` del backend pasa por `backend/src/config/env.js`.
-- **Pendiente del Sprint 5-6:** despliegue del frontend en Vercel/Netlify y del backend en Render (ver `docs/sprints/sprint_5_6.md`).
+- **Despliegue:** frontend en Vercel (`client/`, variable `REACT_APP_API_URL`) y backend en Render (`backend/`, variables `MONGODB_URI` y `CORS_ORIGINS`). URLs y pasos en la sección "Despliegue" del `README.md`.
 
 ## 3. Directrices Arquitectónicas Universales
 - **Estructura Monorepo:** Respetar estrictamente la separación de responsabilidades: `/backend` para el servidor y `/client` para la interfaz.
