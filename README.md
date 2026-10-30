@@ -13,7 +13,6 @@
 
 ### 👥 Integrantes:
 * Camila Antonela Corregidor Higa
-* Ludmila Belén Argüello
 * Nicolas Ferreyra
 * Gonzalo Librandi
 
