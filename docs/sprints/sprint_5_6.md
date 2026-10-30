@@ -50,13 +50,16 @@ React Client (Frontend)  ⇄  Express API (Backend)  ⇄  MongoDB (Persistencia)
 | `/productos`             | Catálogo                    |
 | `/productos/:id`         | Detalle (`useParams`)       |
 | `/contacto`              | Formulario de contacto      |
+| `/admin`                 | Administración del sitio *(agregada, ver nota)* |
 | `/admin/crear-producto`  | Alta de producto            |
 | `/admin/editar-producto/:id` | Edición de producto *(agregada, ver nota)* |
 
 ### Decisiones del equipo
 - **Ruta de edición:** la consigna pide editar productos desde el frontend pero no listaba una ruta para eso. Con el OK del profesor se agrega `/admin/editar-producto/:id`, que carga el producto con `GET /api/productos/:id` y guarda los cambios con `PUT /api/productos/:id`.
-- **Eliminación:** el botón de eliminar llama a `DELETE /api/productos/:id` y luego redirige al catálogo con `useNavigate`.
-- **Campos del modelo:** el schema de Mongoose mantiene los 15 campos que ya usaban los productos del Sprint 3-4 (`categoria`, `medidas`, `colores`, etc.). Los 5 campos de la consigna son el mínimo requerido.
+- **Panel de administración:** se agrega `/admin` ("Administración del sitio"), accesible desde el navbar. Lista todos los productos en formato tabla con las acciones Ver, Editar y Eliminar, y el botón para crear uno nuevo. La tienda pública (catálogo y detalle) no muestra acciones de administración.
+- **Eliminación:** desde la tabla de `/admin`, con confirmación previa. Llama a `DELETE /api/productos/:id` y saca el producto de la lista.
+- **Después de crear o editar:** se vuelve a `/admin` con `useNavigate` y se muestra un mensaje de confirmación.
+- **Campos del modelo:** el schema de Mongoose tiene 20 campos: los 5 de la consigna (que son el mínimo requerido), los que ya usaban los productos del Sprint 3-4 (`categoria`, `destacado`, `colores`, etc.) y las especificaciones técnicas que muestra la página de detalle (`medidas`, `materiales`, `acabado`, `capacidad`, `peso`, `garantia`, etc.). Las especificaciones que aparecían en un solo producto (por ejemplo, `rotacion` o `apilables`) no se incluyen en el modelo; el script de seed avisa cuáles descarta.
 - **Imagen:** se mantiene el nombre `img` en lugar de `imagenUrl` para no romper el frontend existente.
 - **Identificador:** el `id` numérico se reemplaza por el `_id` (ObjectId) que genera MongoDB, tanto en la API como en el frontend.
 - **Sin autenticación:** el proyecto todavía no tiene usuarios, así que las vistas `/admin/...` quedan accesibles para todos en esta etapa. Todas las vistas de administración viven bajo el prefijo `/admin` para poder protegerlas en bloque cuando se incorpore el login.

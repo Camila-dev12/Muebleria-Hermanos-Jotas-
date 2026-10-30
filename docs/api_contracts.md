@@ -9,7 +9,7 @@ Este documento define la interfaz de comunicación entre el frontend (React) y e
 ## Convenciones generales
 
 - **Respuestas exitosas:** el contenido viaja siempre dentro de la propiedad `data`.
-- **Cuerpo de las peticiones:** `POST` y `PUT` envían JSON con el header `Content-Type: application/json`.
+- **Cuerpo de las peticiones:** `POST` y `PUT` envían un objeto JSON con el header `Content-Type: application/json`. Si el cuerpo falta, no es un objeto (por ejemplo, un array) o es un JSON mal formado, la API responde `400`.
 - **Respuestas de error:** todas usan el mismo formato:
   ```json
   {
@@ -25,23 +25,23 @@ Este documento define la interfaz de comunicación entre el frontend (React) y e
 
 | Campo              | Tipo       | Requerido | Notas                                    |
 |--------------------|------------|-----------|------------------------------------------|
-| `_id`              | `String`   | —         | ObjectId generado por MongoDB. No se envía al crear. |
+| `_id`              | `String`   | —         | ObjectId generado por MongoDB. Si se envía en `POST` o `PUT`, se ignora. |
 | `nombre`           | `String`   | Sí        |                                          |
 | `precio`           | `Number`   | Sí        | Mayor o igual a `0`.                     |
 | `categoria`        | `String`   | No        |                                          |
-| `img`              | `String`   | No        | Ruta o URL de la imagen.                 |
+| `img`              | `String`   | No        | Ruta servida por el backend (`assets/img/...`) o URL completa. |
 | `destacado`        | `Boolean`  | No        | Por defecto `false`.                     |
-| `stock`            | `Number`   | No        | Entero mayor o igual a `0`.              |
-| `descripcionCorta` | `String`   | No        |                                          |
+| `stock`            | `Number`   | No        | Entero mayor o igual a `0`. Se puede enviar `null` para vaciarlo. |
+| `descripcionCorta` | `String`   | No        | Se muestra en la tarjeta del catálogo.   |
 | `descripcion`      | `String`   | No        |                                          |
-| `medidas`          | `String`   | No        |                                          |
-| `estructura`       | `String`   | No        |                                          |
-| `tapizado`         | `String`   | No        |                                          |
-| `relleno`          | `String`   | No        |                                          |
-| `sostenibilidad`   | `String`   | No        |                                          |
 | `colores`          | `String[]` | No        |                                          |
 
-Los campos que no figuran en la tabla se ignoran al crear o actualizar.
+**Especificaciones técnicas** (todas `String`, opcionales; se muestran en el detalle del producto):
+`medidas`, `materiales`, `estructura`, `tapizado`, `relleno`, `acabado`, `capacidad`, `peso`, `garantia`, `sostenibilidad`.
+
+`precio` y `stock` deben enviarse como **números JSON** (`9900`, no `"9900"`). Cualquier otro tipo (texto, booleano) se rechaza con `400` y el mensaje `"El campo '<campo>' tiene un valor inválido"`.
+
+En los campos de texto se eliminan los espacios al principio y al final. Los campos que no figuran en el modelo se ignoran al crear o actualizar.
 
 ```json
 {

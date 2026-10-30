@@ -17,7 +17,8 @@ Este proyecto es una aplicación web **evolutiva** construida a lo largo de múl
 
 El proyecto refleja el crecimiento desde un sitio web estático tradicional hacia una aplicación moderna cliente-servidor:
 - **Fase Inicial (Sprints 1 y 2):** Maquetación y lógica frontend nativa (HTML5, CSS3, JavaScript Vanilla).
-- **Fase Actual (Sprints 3 y 4):** Refactorización completa a una arquitectura Monorepo. El frontend ahora utiliza **React**, mientras que los datos son servidos por una API REST construida con **Node.js y Express**.
+- **Sprints 3 y 4:** Refactorización completa a una arquitectura Monorepo. El frontend pasa a **React** y los datos son servidos por una API REST construida con **Node.js y Express**.
+- **Fase Actual (Sprints 5 y 6):** Persistencia en **MongoDB** con **Mongoose** y CRUD completo de productos (crear, leer, actualizar y eliminar). El frontend incorpora **React Router DOM** con rutas dinámicas y un panel de administración en `/admin` para crear, editar y eliminar productos.
 
 ---
 
@@ -26,8 +27,22 @@ El proyecto refleja el crecimiento desde un sitio web estático tradicional haci
 El proyecto mantiene los objetivos de UI/UX originales (sitio responsivo, experiencia de compra simulada, catálogo, carrito y formulario de contacto), pero la implementación técnica se ha actualizado:
 
 * **Arquitectura:** De archivos estáticos servidos localmente a un entorno de Monorepo con separación Cliente/Servidor.
-* **Frontend:** De manipulación directa del DOM con Vanilla JS a una jerarquía de componentes funcionales en React manejando el estado mediante hooks (`useState`).
-* **Backend:** De datos hardcodeados en el frontend a un servidor Express con enrutamiento (`express.Router`) y middlewares, comunicándose vía peticiones `fetch`.
+* **Frontend:** De manipulación directa del DOM con Vanilla JS a una jerarquía de componentes funcionales en React manejando el estado mediante hooks, con páginas y rutas de React Router (`useParams`, `useNavigate`).
+* **Backend:** De datos hardcodeados en el frontend a un servidor Express con enrutamiento (`express.Router`) y middlewares, y de datos en memoria a una base de datos MongoDB.
+
+### Rutas del frontend
+
+| Ruta | Vista |
+|------|-------|
+| `/` | Inicio con productos destacados |
+| `/productos` | Catálogo con filtros por categoría y búsqueda (`?q=`) |
+| `/productos/:id` | Detalle del producto |
+| `/contacto` | Formulario de contacto |
+| `/admin` | Administración del sitio: tabla de productos con acciones para ver, editar y eliminar |
+| `/admin/crear-producto` | Alta de producto |
+| `/admin/editar-producto/:id` | Edición de producto |
+
+> Las vistas de `/admin` no requieren autenticación en esta etapa (ver `docs/sprints/sprint_5_6.md`).
 
 *(Para ver el historial completo de requerimientos por sprint, consultar la carpeta `/docs/sprints/`)*
 
@@ -80,4 +95,10 @@ cd client
 npm install
 npm start
 ```
-La aplicación se abrirá en tu navegador consumiendo los datos de la API local.
+La aplicación se abrirá en tu navegador consumiendo los datos de la API local. En desarrollo no hace falta configurar nada: las peticiones a `/api` pasan al backend por el `proxy` de `client/package.json`.
+
+Para correr los tests del frontend:
+```bash
+cd client
+npm test
+```
