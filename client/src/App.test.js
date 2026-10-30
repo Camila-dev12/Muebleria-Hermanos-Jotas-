@@ -75,6 +75,14 @@ test('la búsqueda del navbar filtra el catálogo usando ?q=', async () => {
   expect(screen.queryByRole('link', { name: 'Sofá Patagonia' })).not.toBeInTheDocument();
 });
 
+test('si responde algo que no es la API (HTML en vez de JSON), se muestra un mensaje claro', async () => {
+  // Pasa si REACT_APP_API_URL está mal configurada: el hosting devuelve su index.html.
+  global.fetch = jest.fn(() => Promise.resolve({ ok: true, status: 200, json: () => Promise.reject(new SyntaxError('Unexpected token <')) }));
+  renderAt('/productos');
+
+  expect(await screen.findByText('No pudimos conectarnos con el servidor. Probá de nuevo en unos minutos.')).toBeInTheDocument();
+});
+
 test('el inicio muestra solo los productos destacados', async () => {
   renderAt('/');
 
