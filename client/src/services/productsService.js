@@ -27,6 +27,12 @@ async function request(path = '', { method = 'GET', body } = {}) {
     throw error;
   }
 
+  // Una respuesta sin JSON válido indica que no respondió la API
+  // (por ejemplo, REACT_APP_API_URL mal configurada en producción).
+  if (!result) {
+    throw new Error('No pudimos conectarnos con el servidor. Probá de nuevo en unos minutos.');
+  }
+
   return result.data;
 }
 
