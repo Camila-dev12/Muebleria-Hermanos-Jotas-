@@ -62,8 +62,8 @@ A partir de los Sprints 3 y 4, el proyecto requiere levantar dos servidores loca
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/Camila-dev12/Muebleria-Hermanos-Jotas-.git
-cd Muebleria-Hermanos-Jotas-
+git clone https://github.com/Camila-dev12/muebleria-hermanos-jotas.git
+cd muebleria-hermanos-jotas
 ```
 
 ### 2. Levantar el Backend (Express)
